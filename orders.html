@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Orders – SivaSakthi Marketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--dark:#0A0A0F;--dark2:#111118;--gold:#C9A84C;--gold-light:#E8C97A;--gold-dim:#8B6F2E;--text:#F0EDE8;--muted:rgba(240,237,232,0.5);--faint:rgba(240,237,232,0.2);--success:rgba(46,213,115,0.9);--danger:rgba(255,107,107,0.9);--warning:rgba(255,165,0,0.9);--info:rgba(74,144,226,0.9);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Outfit',sans-serif;background:#0A0A0F;color:#F0EDE8;min-height:100vh;position:relative;}
+    .bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;}
+    .orb1{width:600px;height:600px;background:rgba(201,168,76,0.07);filter:blur(120px);top:-200px;right:-150px;}
+    .orb2{width:500px;height:500px;background:rgba(201,168,76,0.05);filter:blur(120px);bottom:-150px;left:-150px;}
+    nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;width:calc(100% - 48px);max-width:1200px;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(10,10,15,0.9);backdrop-filter:blur(24px);border:1px solid rgba(201,168,76,0.2);border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,0.5);}
+    nav.scrolled{box-shadow:0 12px 56px rgba(0,0,0,0.6);}
+    .brand{display:flex;align-items:center;gap:11px;text-decoration:none;}
+    .brand-mono{width:40px;height:40px;border-radius:9px;background:linear-gradient(135deg,#8B6F2E,#C9A84C);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(201,168,76,0.3);}
+    .brand-mono span{font-family:'Cinzel',serif;font-weight:700;font-size:13px;color:#0A0A0F;line-height:1;}
+    .brand-mono small{font-size:6px;color:rgba(10,10,15,0.5);letter-spacing:1px;text-transform:uppercase;}
+    .brand-name{font-family:'Cinzel',serif;font-size:15px;font-weight:600;color:#E8C97A;}
+    .brand-sub{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+    .nav-btn,.btn-ghost{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:8px 14px;border-radius:8px;border:1px solid rgba(201,168,76,0.18);background:transparent;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-block;}
+    .nav-btn:hover,.btn-ghost:hover{color:#E8C97A;border-color:#C9A84C;}
+    .page{padding:100px 5vw 60px;position:relative;z-index:1;max-width:900px;margin:0 auto;}
+    .page-header{margin-bottom:32px;}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:#C9A84C;box-shadow:0 0 8px #C9A84C;animation:pulse 2.5s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
+    .eyebrow-text{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;}
+    .page-title{font-family:'Cinzel',serif;font-size:clamp(24px,3vw,38px);font-weight:600;color:#F0EDE8;margin-bottom:6px;}
+    .page-title span{color:#C9A84C;}
+    .page-desc{font-size:14px;color:var(--muted);line-height:1.7;}
+    .loading{text-align:center;padding:48px;color:var(--muted);font-size:14px;}
+    .spinner{width:36px;height:36px;border:3px solid rgba(201,168,76,0.15);border-top-color:#C9A84C;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .rv{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .rv.in{opacity:1;transform:translateY(0);}
+    .badge{display:inline-block;padding:4px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+    .badge-success{background:rgba(46,213,115,0.12);color:var(--success);border:1px solid rgba(46,213,115,0.25);}
+    .badge-danger{background:rgba(255,107,107,0.12);color:var(--danger);border:1px solid rgba(255,107,107,0.25);}
+    .badge-warning{background:rgba(255,165,0,0.12);color:var(--warning);border:1px solid rgba(255,165,0,0.25);}
+    .badge-info{background:rgba(74,144,226,0.12);color:var(--info);border:1px solid rgba(74,144,226,0.25);}
+    .badge-gold{background:rgba(201,168,76,0.12);color:#C9A84C;border:1px solid rgba(201,168,76,0.25);}
+    .btn-gold{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#8B6F2E,#C9A84C);color:#0A0A0F;padding:11px 22px;border-radius:9px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.25s;text-decoration:none;box-shadow:0 4px 18px rgba(201,168,76,0.25);}
+    .btn-gold:hover{transform:translateY(-2px);}
+    @media(max-width:640px){nav{width:calc(100% - 20px);}.page{padding:86px 4vw 50px;}}
+    .orders-list { display: flex; flex-direction: column; gap: 18px; }
+
+    .order-card {
+      border-radius: 18px; overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(201,168,76,0.12);
+      transition: border-color 0.25s;
+    }
+    .order-card:hover { border-color: rgba(201,168,76,0.28); }
+
+    .order-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+      flex-wrap: wrap; gap: 12px;
+      cursor: pointer;
+    }
+    .order-head:hover { background: rgba(201,168,76,0.03); }
+
+    .order-id-num {
+      font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700;
+      color: var(--gold);
+    }
+    .order-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .order-head-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .order-total {
+      font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: var(--gold-light);
+    }
+    .chevron { font-size: 13px; color: var(--muted); transition: transform 0.3s; }
+    .order-card.open .chevron { transform: rotate(180deg); }
+
+    /* STATUS STEPPER */
+    .status-stepper {
+      display: flex; align-items: center; gap: 0;
+      margin: 0 22px;
+    }
+    .step {
+      display: flex; flex-direction: column; align-items: center;
+      flex: 1; position: relative;
+    }
+    .step::before {
+      content: ''; position: absolute; top: 14px; left: -50%;
+      width: 100%; height: 2px;
+      background: rgba(201,168,76,0.12);
+      z-index: 0;
+    }
+    .step:first-child::before { display: none; }
+    .step.done::before { background: var(--gold); }
+
+    .step-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 2px solid rgba(201,168,76,0.2);
+      background: rgba(255,255,255,0.03);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; position: relative; z-index: 1;
+      transition: all 0.3s;
+    }
+    .step.done .step-dot {
+      background: var(--gold); border-color: var(--gold);
+      box-shadow: 0 0 14px rgba(201,168,76,0.4);
+    }
+    .step.current .step-dot {
+      background: rgba(201,168,76,0.15); border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(201,168,76,0.12);
+    }
+    .step-lbl {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+      color: var(--muted); margin-top: 7px; text-align: center;
+    }
+    .step.done .step-lbl, .step.current .step-lbl { color: var(--gold-light); }
+
+    /* ORDER BODY */
+    .order-body { display: none; padding: 20px 22px; }
+    .order-card.open .order-body { display: block; }
+
+    .ob-stepper-wrap {
+      padding: 18px 0 22px;
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+      margin-bottom: 18px;
+    }
+    .ob-stepper-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
+    }
+
+    .ob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+    .ob-box {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.1);
+      border-radius: 12px; padding: 16px 18px;
+    }
+    .ob-box-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+    }
+    .ob-row { display: flex; justify-content: space-between; margin-bottom: 7px; font-size: 13px; }
+    .ob-row:last-child { margin-bottom: 0; }
+    .ob-row .lbl { color: var(--muted); }
+    .ob-row .val { color: var(--text); font-weight: 500; text-align: right; max-width: 180px; }
+
+    /* Items list */
+    .items-list { display: flex; flex-direction: column; gap: 10px; }
+    .item-row {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(201,168,76,0.08);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .item-ico { font-size: 22px; flex-shrink: 0; }
+    .item-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .item-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .item-total { margin-left: auto; font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: var(--gold); }
+
+    .ob-total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 18px;
+      background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 10px; margin-top: 14px;
+    }
+    .ob-total-lbl { font-family: 'Cinzel', serif; font-size: 15px; color: var(--text); }
+    .ob-total-val { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: var(--gold); }
+
+    /* Empty state */
+    .empty-orders { text-align: center; padding: 80px 20px; }
+    .empty-orders .ei { font-size: 56px; margin-bottom: 16px; }
+    .empty-orders h3 { font-family: 'Cinzel', serif; font-size: 20px; color: var(--text); margin-bottom: 8px; }
+    .empty-orders p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+
+    @media(max-width: 640px) {
+      .ob-grid { grid-template-columns: 1fr; }
+      .status-stepper { gap: 0; }
+      .step-lbl { font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+
+<nav id="topNav">
+  <a href="index.html" class="brand">
+    <div class="brand-mono"><span>SS</span><small>MKT</small></div>
+    <div><div class="brand-name">SivaSakthi Marketing</div><div class="brand-sub">Wholesale &amp; Retail</div></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a href="index.html" class="btn-ghost" style="font-size:11px;padding:8px 14px">🛒 Shop</a>
+    <button class="nav-btn" onclick="doLogout()">Logout</button>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-header rv">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><div class="eyebrow-text">Order History</div></div>
+    <div class="page-title">My <span>Orders</span></div>
+    <div class="page-desc">Track all your past orders and their current delivery status.</div>
+  </div>
+
+  <div id="ordersWrap">
+    <div class="loading"><div class="spinner"></div>Loading your orders…</div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth(), db = firebase.firestore();
+
+const STATUS_STEPS = ['pending','confirmed','shipped','delivered'];
+const STATUS_ICONS = { pending:'⏳', confirmed:'✅', shipped:'🚚', delivered:'🎉', cancelled:'❌' };
+const STATUS_LABELS = { pending:'Pending', confirmed:'Confirmed', shipped:'Shipped', delivered:'Delivered', cancelled:'Cancelled' };
+
+auth.onAuthStateChanged(async user => {
+  if (!user) { window.location.href = 'login.html'; return; }
+  await loadOrders(user.uid);
+  initReveal();
+});
+
+function doLogout() { auth.signOut().then(() => window.location.href = 'login.html'); }
+
+async function loadOrders(uid) {
+  const wrap = document.getElementById('ordersWrap');
+  try {
+    const snap = await db.collection('orders')
+      .where('userId','==', uid)
+      .get();
+
+    if (snap.empty) {
+      wrap.innerHTML = `
+        <div class="empty-orders rv">
+          <div class="ei">📦</div>
+          <h3>No Orders Yet</h3>
+          <p>You haven't placed any orders. Start shopping to see your orders here.</p>
+          <a href="index.html" class="btn-gold">Browse Products</a>
+        </div>`;
+      initReveal(); return;
+    }
+
+    const rawOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => {
+        const ta = a.createdAt ? a.createdAt.toMillis() : 0;
+        const tb = b.createdAt ? b.createdAt.toMillis() : 0;
+        return tb - ta; // newest first
+      });
+    const orders = rawOrders.map((o, i) => ({ ...o, num: o.myOrderNum || (rawOrders.length - i) }));
+    wrap.innerHTML = `<div class="orders-list">${orders.map(o => buildOrderCard(o)).join('')}</div>`;
+    initReveal();
+  } catch(e) {
+    wrap.innerHTML = `<div class="loading">Error loading orders. Please refresh.</div>`;
+    console.error(e);
+  }
+}
+
+function buildOrderCard(o) {
+  const date = o.createdAt
+    ? o.createdAt.toDate().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})
+    : '—';
+  const del = o.delivery || {};
+  const isCancelled = o.status === 'cancelled';
+  const statusBadge = isCancelled
+    ? `<span class="badge badge-danger">❌ Cancelled</span>`
+    : `<span class="badge ${statusBadgeClass(o.status)}">${STATUS_ICONS[o.status]||'⏳'} ${STATUS_LABELS[o.status]||o.status}</span>`;
+
+  // Stepper
+  const stepperHTML = isCancelled ? `
+    <div style="text-align:center;padding:14px 0;color:var(--danger);font-size:14px;font-weight:600">
+      ❌ This order was cancelled
+    </div>` : buildStepper(o.status);
+
+  // Items
+  const itemsHTML = (o.items||[]).map(item => `
+    <div class="item-row">
+      <div class="item-ico">${item.emoji||'📦'}</div>
+      <div>
+        <div class="item-name">${item.name}</div>
+        <div class="item-meta">₹${item.price} × ${item.qty}</div>
+      </div>
+      <div class="item-total">₹${item.price * item.qty}</div>
+    </div>`).join('');
+
+  return `
+  <div class="order-card rv" id="ocard-${o.id}">
+    <div class="order-head" onclick="toggleCard('${o.id}')">
+      <div>
+        <div class="order-id-num">Order #${o.num}</div>
+        <div class="order-date">${date}</div>
+      </div>
+      <div class="order-head-right">
+        ${statusBadge}
+        <div class="order-total">₹${o.total}</div>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+
+    <div class="order-body">
+      <div class="ob-stepper-wrap">
+        <div class="ob-stepper-title">Order Status</div>
+        ${stepperHTML}
+      </div>
+
+      <div class="ob-grid">
+        <!-- Delivery Info -->
+        <div class="ob-box">
+          <div class="ob-box-title">🚚 Delivery Details</div>
+          <div class="ob-row"><span class="lbl">Name</span><span class="val">${del.name||'—'}</span></div>
+          <div class="ob-row"><span class="lbl">Phone</span><span class="val">${del.phone||'—'}</span></div>
+          <div class="ob-row"><span class="lbl">Address</span><span class="val">${del.address||'—'}</span></div>
+          <div class="ob-row"><span class="lbl">City</span><span class="val">${del.city||'—'}</span></div>
+          <div class="ob-row"><span class="lbl">Pincode</span><span class="val">${del.pin||'—'}</span></div>
+        </div>
+        <!-- Payment Info -->
+        <div class="ob-box">
+          <div class="ob-box-title">💰 Payment Details</div>
+          <div class="ob-row"><span class="lbl">Method</span><span class="val">Cash on Delivery 🚚</span></div>
+          <div class="ob-row"><span class="lbl">Subtotal</span><span class="val">₹${o.subtotal||0}</span></div>
+          <div class="ob-row"><span class="lbl">Delivery</span><span class="val">${o.deliveryFee===0?'FREE ✓':'₹'+(o.deliveryFee||60)}</span></div>
+          <div class="ob-row"><span class="lbl">Order ID</span><span class="val" style="font-size:11px;color:var(--faint)">#${o.num}</span></div>
+        </div>
+      </div>
+
+      <!-- Items -->
+      <div style="margin-bottom:14px">
+        <div class="ob-box-title" style="margin-bottom:12px">🛍️ Items Ordered (${(o.items||[]).length})</div>
+        <div class="items-list">${itemsHTML}</div>
+      </div>
+
+      <div class="ob-total-row">
+        <span class="ob-total-lbl">Order Total</span>
+        <span class="ob-total-val">₹${o.total}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildStepper(currentStatus) {
+  const steps = [
+    { key:'pending',   icon:'📋', label:'Order Placed' },
+    { key:'confirmed', icon:'✅', label:'Confirmed' },
+    { key:'shipped',   icon:'🚚', label:'Shipped' },
+    { key:'delivered', icon:'🎉', label:'Delivered' },
+  ];
+  const currentIdx = steps.findIndex(s => s.key === currentStatus);
+  const html = steps.map((s, i) => {
+    const isDone    = i < currentIdx;
+    const isCurrent = i === currentIdx;
+    return `<div class="step ${isDone?'done':''} ${isCurrent?'current':''}">
+      <div class="step-dot">${isDone ? '✓' : s.icon}</div>
+      <div class="step-lbl">${s.label}</div>
+    </div>`;
+  }).join('');
+  return `<div class="status-stepper">${html}</div>`;
+}
+
+function statusBadgeClass(s) {
+  const map = { pending:'badge-warning', confirmed:'badge-info', shipped:'badge-gold', delivered:'badge-success', cancelled:'badge-danger' };
+  return map[s] || 'badge-warning';
+}
+
+function toggleCard(id) {
+  document.getElementById('ocard-'+id).classList.toggle('open');
+}
+
+function initReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.rv:not(.in)').forEach(el => obs.observe(el));
+}
+
+window.addEventListener('scroll', () =>
+  document.getElementById('topNav').classList.toggle('scrolled', window.scrollY > 20)
+);
+</script>
+</body>
+</html>

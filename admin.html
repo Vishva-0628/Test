@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin – SivaSakthi Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--dark:#0A0A0F;--dark2:#111118;--dark3:#18181F;--gold:#C9A84C;--gold-light:#E8C97A;--gold-dim:#8B6F2E;--text:#F0EDE8;--muted:rgba(240,237,232,0.5);--faint:rgba(240,237,232,0.2);--success:rgba(46,213,115,0.9);--danger:rgba(255,107,107,0.9);--warning:rgba(255,165,0,0.9);--info:rgba(74,144,226,0.9);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#0A0A0F;color:#F0EDE8;min-height:100vh;display:flex;overflow-x:hidden;}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(120px);}
+.orb1{width:600px;height:600px;background:rgba(201,168,76,0.07);top:-200px;right:-100px;}
+.orb2{width:500px;height:500px;background:rgba(201,168,76,0.05);bottom:-150px;left:-150px;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:230px;min-height:100vh;background:#18181F;border-right:1px solid rgba(201,168,76,0.1);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:100;}
+.sb-top{padding:24px 18px 20px;border-bottom:1px solid rgba(201,168,76,0.1);text-align:center;}
+.sb-logo{width:48px;height:48px;border-radius:11px;background:linear-gradient(135deg,#8B6F2E,#C9A84C);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 10px;box-shadow:0 0 20px rgba(201,168,76,0.28);}
+.sb-logo span{font-family:'Cinzel',serif;font-weight:700;font-size:15px;color:#0A0A0F;line-height:1;}
+.sb-logo small{font-size:6px;color:rgba(10,10,15,0.55);letter-spacing:1px;text-transform:uppercase;}
+.sb-store-name{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:#E8C97A;margin-bottom:2px;}
+.sb-store-sub{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+
+/* Sidebar nav — centred vertically */
+.sb-nav{flex:1;padding:16px 10px;display:flex;flex-direction:column;justify-content:center;gap:2px;}
+.sb-sec{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--faint);padding:0 10px;margin:12px 0 5px;}
+.sb-btn{display:flex;align-items:center;gap:11px;width:100%;padding:11px 12px;border-radius:9px;border:none;background:transparent;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.2s;text-align:left;text-decoration:none;}
+.sb-btn:hover{background:rgba(201,168,76,0.08);color:#E8C97A;}
+.sb-btn.active{background:rgba(201,168,76,0.1);color:#E8C97A;border-left:2px solid #C9A84C;border-radius:0 9px 9px 0;padding-left:10px;}
+.sb-btn .si{font-size:16px;flex-shrink:0;}
+.sb-count{margin-left:auto;background:rgba(201,168,76,0.18);color:#C9A84C;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;}
+
+.sb-bottom{padding:14px 10px;border-top:1px solid rgba(201,168,76,0.1);}
+.sb-email{font-size:10px;color:var(--faint);padding:0 12px;margin-bottom:8px;word-break:break-all;text-align:center;}
+
+/* ── MAIN ── */
+.main{margin-left:230px;flex:1;padding:28px 32px;min-height:100vh;position:relative;z-index:1;}
+.ph{margin-bottom:26px;}
+.ph h1{font-family:'Cinzel',serif;font-size:24px;font-weight:600;color:#F0EDE8;}
+.ph p{font-size:13px;color:var(--muted);margin-top:3px;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:26px;}
+.sc{border-radius:15px;padding:20px 18px;background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(201,168,76,0.1);transition:all 0.22s;}
+.sc:hover{border-color:rgba(201,168,76,0.28);transform:translateY(-2px);}
+.sc-ico{font-size:24px;margin-bottom:10px;}
+.sc-num{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:#C9A84C;}
+.sc-lbl{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+
+/* PANELS */
+.panel{display:none;}
+.panel.show{display:block;}
+.pbox{border-radius:18px;padding:22px;background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(201,168,76,0.1);margin-bottom:22px;}
+.pbox-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(201,168,76,0.09);}
+.pbox-title{font-family:'Cinzel',serif;font-size:16px;font-weight:600;color:#E8C97A;}
+
+/* BUTTONS */
+.btn-gold{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#8B6F2E,#C9A84C);color:#0A0A0F;padding:10px 20px;border-radius:9px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.25s;box-shadow:0 4px 18px rgba(201,168,76,0.25);}
+.btn-gold:hover{transform:translateY(-2px);}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.18);color:#E8C97A;padding:9px 16px;border-radius:9px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;}
+.btn-ghost:hover{background:rgba(201,168,76,0.08);border-color:#C9A84C;}
+.btn-danger{background:rgba(220,53,69,0.12);color:rgba(255,107,107,0.9);border:1px solid rgba(220,53,69,0.25);border-radius:7px;padding:7px 13px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;}
+.btn-danger:hover{background:rgba(220,53,69,0.24);}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{padding:10px 14px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C9A84C;border-bottom:1px solid rgba(201,168,76,0.12);text-align:left;white-space:nowrap;}
+.tbl td{padding:13px 14px;font-size:13px;color:#F0EDE8;border-bottom:1px solid rgba(255,255,255,0.04);}
+.tbl tr:hover td{background:rgba(201,168,76,0.025);}
+
+/* BADGES */
+.badge{display:inline-block;padding:4px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.badge-success{background:rgba(46,213,115,0.12);color:var(--success);border:1px solid rgba(46,213,115,0.25);}
+.badge-danger{background:rgba(255,107,107,0.12);color:var(--danger);border:1px solid rgba(255,107,107,0.25);}
+.badge-warning{background:rgba(255,165,0,0.12);color:var(--warning);border:1px solid rgba(255,165,0,0.25);}
+.badge-info{background:rgba(74,144,226,0.12);color:var(--info);border:1px solid rgba(74,144,226,0.25);}
+.badge-gold{background:rgba(201,168,76,0.12);color:#C9A84C;border:1px solid rgba(201,168,76,0.25);}
+
+/* STATUS SELECT */
+.status-sel{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);color:#F0EDE8;border-radius:7px;padding:6px 10px;font-family:'Outfit',sans-serif;font-size:11px;outline:none;cursor:pointer;}
+.status-sel option{background:#111118;}
+
+/* FORM */
+.fgroup{margin-bottom:13px;}
+.fgroup label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;}
+.fgroup input,.fgroup textarea,.fgroup select{width:100%;padding:11px 13px;border-radius:9px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:'Outfit',sans-serif;font-size:13px;color:#F0EDE8;outline:none;transition:all 0.2s;}
+.fgroup input:focus,.fgroup textarea:focus,.fgroup select:focus{border-color:rgba(201,168,76,0.45);background:rgba(201,168,76,0.04);box-shadow:0 0 0 3px rgba(201,168,76,0.09);}
+.fgroup input::placeholder,.fgroup textarea::placeholder{color:var(--faint);}
+.fgroup select option{background:#111118;}
+.fgroup textarea{resize:vertical;min-height:72px;}
+.prod-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.span2{grid-column:1/-1;}
+
+/* DRAG & DROP IMAGE ZONE */
+.drop-zone{border:2px dashed rgba(201,168,76,0.3);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;transition:all 0.25s;background:rgba(201,168,76,0.03);position:relative;}
+.drop-zone:hover,.drop-zone.drag-over{border-color:#C9A84C;background:rgba(201,168,76,0.07);}
+.drop-zone .dz-ico{font-size:32px;margin-bottom:8px;}
+.drop-zone .dz-txt{font-size:12px;color:var(--muted);line-height:1.6;}
+.drop-zone .dz-txt strong{color:#E8C97A;display:block;margin-bottom:2px;}
+.drop-zone .dz-txt span{font-size:10px;color:var(--faint);}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.img-preview{margin-top:12px;display:none;text-align:center;}
+.img-preview img{max-height:120px;max-width:100%;border-radius:9px;border:1px solid rgba(201,168,76,0.2);}
+.img-preview .img-name{font-size:11px;color:var(--muted);margin-top:6px;}
+.img-preview .img-clear{font-size:10px;color:rgba(255,107,107,0.8);cursor:pointer;text-decoration:underline;margin-top:3px;display:inline-block;}
+
+/* LOADING */
+.loading{text-align:center;padding:48px;color:var(--muted);font-size:14px;}
+.spinner{width:34px;height:34px;border:3px solid rgba(201,168,76,0.15);border-top-color:#C9A84C;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TOAST */
+.toast{position:fixed;bottom:26px;right:26px;z-index:9999;background:rgba(10,10,15,0.97);backdrop-filter:blur(20px);border:1px solid rgba(201,168,76,0.3);border-radius:12px;padding:13px 18px;font-size:13px;color:#E8C97A;box-shadow:0 12px 40px rgba(0,0,0,0.5);transform:translateY(80px);opacity:0;transition:all 0.35s;pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+.cust-card{border-radius:14px;padding:16px;background:rgba(255,255,255,0.035);border:1px solid rgba(201,168,76,0.1);cursor:pointer;transition:all 0.2s;}
+.cust-card:hover{border-color:rgba(201,168,76,0.35);transform:translateY(-2px);}
+.cust-name{font-family:'Cinzel',serif;font-size:14px;font-weight:600;color:#E8C97A;margin-bottom:3px;}
+.cust-phone{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.cust-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;}
+.cust-pending-pos{color:rgba(255,107,107,0.9);font-weight:700;}
+.cust-pending-neg{color:rgba(46,213,115,0.9);font-weight:700;}
+/* BOTTOM NAV for mobile */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;background:#111118;border-top:1px solid rgba(201,168,76,0.15);padding:6px 0 env(safe-area-inset-bottom,6px);}
+.mob-nav-inner{display:flex;justify-content:space-around;align-items:center;}
+.mob-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;background:transparent;border:none;cursor:pointer;color:var(--muted);font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s;text-decoration:none;}
+.mob-btn .si{font-size:20px;}
+.mob-btn.active{color:#C9A84C;}
+.mob-count{background:rgba(201,168,76,0.2);color:#C9A84C;font-size:8px;font-weight:700;padding:1px 5px;border-radius:100px;margin-top:-4px;}
+
+@media(max-width:900px){
+  /* Layout */
+  .sidebar{display:none;}
+  .mob-nav{display:block;}
+  .main{margin-left:0;padding:14px 12px 80px;min-width:0;}
+
+  /* Header */
+  .ph{margin-bottom:18px;}
+  .ph h1{font-size:19px;}
+  .ph p{font-size:12px;}
+
+  /* Stat cards */
+  .stats-grid{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+  .sc{padding:14px 12px;}
+  .sc-ico{font-size:20px;margin-bottom:6px;}
+  .sc-num{font-size:20px;}
+  .sc-lbl{font-size:9px;}
+
+  /* Panels and boxes */
+  .pbox{padding:14px 12px;margin-bottom:14px;border-radius:14px;}
+  .pbox-header{margin-bottom:12px;padding-bottom:10px;flex-wrap:wrap;gap:8px;}
+  .pbox-title{font-size:14px;}
+
+  /* Forms */
+  .prod-form-grid{grid-template-columns:1fr;}
+  .span2{grid-column:auto;}
+  .fgroup{margin-bottom:10px;}
+  .fgroup label{font-size:9px;margin-bottom:5px;}
+  .fgroup input,.fgroup textarea,.fgroup select{padding:10px 11px;font-size:13px;}
+
+  /* Entry forms for stock/ledger */
+  .entry-form{grid-template-columns:1fr 1fr !important;}
+
+  /* Tables — scroll horizontally */
+  .tbl{font-size:12px;}
+  .tbl th{padding:8px 10px;font-size:9px;letter-spacing:1px;}
+  .tbl td{padding:10px 10px;font-size:12px;}
+
+  /* Ledger summary cards */
+  .ldg-summary{grid-template-columns:1fr 1fr;gap:10px;}
+  .ldg-sum-card{padding:12px 10px;border-radius:10px;}
+  .ldg-sum-lbl{font-size:9px;}
+  .ldg-sum-val{font-size:18px;}
+  .rpt-grid{grid-template-columns:1fr 1fr;gap:10px;}
+
+  /* Ledger tabs */
+  .ldg-tabs{flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+  .ldg-tab{padding:7px 14px;font-size:10px;}
+
+  /* Stock grid */
+  .stock-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .stock-card{padding:12px;}
+  .stock-name{font-size:13px;}
+
+  /* Customer cards */
+  #customerSummaryGrid{grid-template-columns:1fr 1fr !important;}
+  .cust-card{padding:12px;}
+
+  /* Buttons */
+  .btn-gold{padding:9px 14px;font-size:10px;}
+  .btn-ghost{padding:7px 12px;font-size:10px;}
+  .btn-danger{padding:6px 10px;font-size:9px;}
+
+  /* Drop zone */
+  .drop-zone{padding:16px 12px;}
+
+  /* Image preview */
+  .img-preview img{max-height:80px;}
+
+  /* Toast */
+  .toast{bottom:74px;right:12px;left:12px;font-size:12px;padding:11px 14px;}
+}
+
+@media(max-width:480px){
+  .main{padding:12px 10px 80px;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .ldg-summary{grid-template-columns:1fr;}
+  .rpt-grid{grid-template-columns:1fr 1fr;}
+  .entry-form{grid-template-columns:1fr !important;}
+  .stock-grid{grid-template-columns:1fr !important;}
+  #customerSummaryGrid{grid-template-columns:1fr !important;}
+  .pbox-header{flex-direction:column;align-items:stretch;}
+  .pbox-header > *{width:100%;}
+  /* Make table cells more compact */
+  .tbl th{padding:7px 8px;font-size:8px;}
+  .tbl td{padding:9px 8px;font-size:11px;}
+}
+/* DRAG-DROP PRODUCT REORDER */
+.drag-row{cursor:grab;user-select:none;transition:background 0.15s,opacity 0.15s;}
+.drag-row:active{cursor:grabbing;}
+.drag-row.dragging{opacity:0.4;background:rgba(201,168,76,0.08);}
+.drag-row.drag-over-top{border-top:2px solid #C9A84C !important;}
+.drag-row.drag-over-bot{border-bottom:2px solid #C9A84C !important;}
+.drag-handle{color:var(--faint);font-size:16px;cursor:grab;padding:0 6px;user-select:none;flex-shrink:0;}
+.drag-handle:hover{color:#C9A84C;}
+/* LEDGER STYLES */
+.ldg-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.ldg-tab{padding:8px 18px;border-radius:8px;border:1px solid rgba(201,168,76,0.2);background:transparent;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.ldg-tab.on{background:linear-gradient(135deg,#8B6F2E,#C9A84C);color:#0A0A0F;border-color:#C9A84C;}
+.ldg-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+.ldg-sum-card{border-radius:14px;padding:16px 18px;border:1px solid rgba(201,168,76,0.1);background:rgba(255,255,255,0.03);}
+.ldg-sum-lbl{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.ldg-sum-val{font-family:'Cinzel',serif;font-size:22px;font-weight:700;}
+.ldg-sum-val.green{color:rgba(46,213,115,0.9);}
+.ldg-sum-val.red{color:rgba(255,107,107,0.9);}
+.ldg-sum-val.gold{color:#C9A84C;}
+.entry-form{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:18px;flex-wrap:wrap;}
+.entry-form .fgroup{margin:0;}
+.entry-form .fgroup input,.entry-form .fgroup select{padding:10px 12px;font-size:13px;}
+.type-in{color:rgba(46,213,115,0.9)!important;border-color:rgba(46,213,115,0.3)!important;}
+.type-out{color:rgba(255,107,107,0.9)!important;border-color:rgba(255,107,107,0.3)!important;}
+.stock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
+.stock-card{border-radius:14px;padding:18px;background:rgba(255,255,255,0.035);border:1px solid rgba(201,168,76,0.1);}
+.stock-name{font-family:'Cinzel',serif;font-size:14px;font-weight:600;color:#E8C97A;margin-bottom:10px;}
+.stock-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;}
+.stock-lbl{color:var(--muted);}
+.stock-val{font-weight:600;}
+.stock-val.ok{color:rgba(46,213,115,0.9);}
+.stock-val.low{color:rgba(255,165,0,0.9);}
+.stock-val.out{color:rgba(255,107,107,0.9);}
+.stock-bar{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);margin-top:10px;overflow:hidden;}
+.stock-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#8B6F2E,#C9A84C);transition:width 0.4s;}
+.rpt-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;}
+@media(max-width:700px){.ldg-summary{grid-template-columns:1fr 1fr;}.entry-form{grid-template-columns:1fr 1fr;}.rpt-grid{grid-template-columns:1fr;}}
+@media(max-width:480px){.ldg-summary{grid-template-columns:1fr;}.entry-form{grid-template-columns:1fr;}.stock-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sb-top">
+    <div class="sb-logo"><span>SS</span><small>MKT</small></div>
+    <div class="sb-store-name">SivaSakthi Marketing</div>
+    <div class="sb-store-sub">Admin Panel</div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-sec">Overview</div>
+    <button class="sb-btn active" onclick="show('dashboard',this)"><span class="si">📊</span><span>Dashboard</span></button>
+    <button class="sb-btn"        onclick="show('orders',this)"><span class="si">📦</span><span>Orders</span><span class="sb-count" id="sbOrderCount"></span></button>
+    <div class="sb-sec">Manage</div>
+    <button class="sb-btn"        onclick="show('products',this)"><span class="si">🏷️</span><span>Products</span></button>
+    <button class="sb-btn" id="sb-btn-users" onclick="show('users',this)"><span class="si">👥</span><span>Users</span></button>
+    <div class="sb-sec">Finance</div>
+    <button class="sb-btn" onclick="show('stockdash',this)"><span class="si">📊</span><span>Stock Dashboard</span></button>
+    <button class="sb-btn" onclick="show('stock',this)"><span class="si">📦</span><span>Stock Entry</span></button>
+    <button class="sb-btn" id="sb-btn-ledger" onclick="show('ledger',this)"><span class="si">📒</span><span>Ledger</span></button>
+    <div class="sb-sec">Site</div>
+    <a href="index.html" target="_blank" class="sb-btn"><span class="si">🌐</span><span>View Website</span></a>
+  </nav>
+
+  <div class="sb-bottom">
+    <div class="sb-email" id="adminEmail"></div>
+    <button class="sb-btn" onclick="doLogout()"><span class="si">🚪</span><span>Logout</span></button>
+  </div>
+</aside>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="main">
+
+  <!-- DASHBOARD -->
+  <div class="panel show" id="panel-dashboard">
+    <div class="ph"><h1>Dashboard</h1><p>Store overview at a glance</p></div>
+    <div class="stats-grid">
+      <div class="sc"><div class="sc-ico">📦</div><div class="sc-num" id="stOrders">–</div><div class="sc-lbl">Total Orders</div></div>
+      <div class="sc"><div class="sc-ico">💰</div><div class="sc-num" id="stRevenue">–</div><div class="sc-lbl">Total Revenue</div></div>
+      <div class="sc"><div class="sc-ico">⏳</div><div class="sc-num" id="stPending">–</div><div class="sc-lbl">Pending Orders</div></div>
+      <div class="sc"><div class="sc-ico">👥</div><div class="sc-num" id="stUsers">–</div><div class="sc-lbl">Registered Users</div></div>
+    </div>
+    <div class="pbox">
+      <div class="pbox-header">
+        <div class="pbox-title">Recent Orders</div>
+        <button class="btn-gold" style="padding:8px 16px;font-size:10px" onclick="show('orders',document.querySelectorAll('.sb-btn')[1])">View All</button>
+      </div>
+      <div id="recentOrders"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div class="panel" id="panel-orders">
+    <div class="ph"><h1>Orders</h1><p id="ordersSubtitle">All customer orders</p></div>
+    <div class="pbox">
+      <div id="ordersBulkBar" style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+        <button class="btn-danger" onclick="bulkDeleteOrders()" style="font-size:11px">🗑 Delete Selected</button>
+        <span id="orderSelCount" style="font-size:12px;color:var(--muted);align-self:center"></span>
+      </div>
+      <div style="overflow-x:auto" id="ordersContainer"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="panel" id="panel-products">
+    <div class="ph"><h1>Products</h1><p>Add or remove products from the store</p></div>
+
+    <div class="pbox" id="addForm">
+      <div class="pbox-header">
+        <div class="pbox-title">Add New Product</div>
+        <button class="btn-ghost" style="font-size:11px;padding:7px 14px" onclick="toggleForm()">− Hide</button>
+      </div>
+      <div class="prod-form-grid">
+        <div class="fgroup"><label>Product Name *</label><input type="text" id="pName" placeholder="e.g. Plastic Chair"/></div>
+        <div class="fgroup"><label>Category *</label>
+          <div style="display:flex;gap:6px">
+            <select id="pCat" style="flex:1">
+              <option value="">— Select category —</option>
+            </select>
+            <button type="button" class="btn-ghost" style="padding:8px 11px;font-size:11px;white-space:nowrap" onclick="addNewCategory()">+ New</button>
+          </div>
+        </div>
+        <div class="fgroup"><label>Price ₹ *</label><input type="number" id="pPrice" placeholder="450" min="1"/></div>
+        <div class="fgroup"><label>Tag (optional)</label><input type="text" id="pTag" placeholder="Popular / New / Best Seller"/></div>
+        <div class="fgroup"><label>Emoji Icon</label><input type="text" id="pEmoji" placeholder="🪑"/></div>
+        <div class="fgroup"><label>Company / Brand</label><input type="text" id="pCompany" placeholder="e.g. Apple, ADR, Veeram…"/></div>
+
+        <!-- DRAG & DROP IMAGE UPLOAD — PNG only -->
+        <div class="fgroup span2">
+          <label>Product Image (PNG only)</label>
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="imgFile" accept=".png,image/png" onchange="handleFile(this.files[0])"/>
+            <div class="dz-ico">🖼️</div>
+            <div class="dz-txt">
+              <strong>Drag &amp; Drop your PNG image here</strong>
+              or click to browse
+              <span>Only .PNG files accepted</span>
+            </div>
+          </div>
+          <div class="img-preview" id="imgPreview">
+            <img id="imgPreviewEl" src="" alt="Preview"/>
+            <div class="img-name" id="imgName"></div>
+            <span class="img-clear" onclick="clearImage()">✕ Remove image</span>
+          </div>
+          <!-- Hidden: stores base64 data URI of selected image -->
+          <input type="hidden" id="pImgData"/>
+          <input type="hidden" id="pImgName"/>
+        </div>
+
+        <div class="fgroup span2"><label>Description *</label><textarea id="pDesc" placeholder="Short product description…"></textarea></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="btn-gold" id="saveProdBtn" onclick="addProduct()">💾 Save Product</button>
+        <span id="pMsg" style="font-size:13px;color:#C9A84C"></span>
+      </div>
+    </div>
+
+    <div class="pbox">
+      <div class="pbox-header">
+        <div class="pbox-title">All Products</div>
+        <button class="btn-ghost" style="font-size:11px;padding:7px 14px" onclick="toggleForm()">+ Add Product</button>
+      </div>
+      <div style="overflow-x:auto" id="productsContainer"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+
+    <!-- Category Manager -->
+    <div class="pbox">
+      <div class="pbox-header">
+        <div class="pbox-title">Manage Categories</div>
+        <button class="btn-ghost" style="font-size:11px;padding:7px 14px" onclick="loadCategoryManager()">↻ Refresh</button>
+      </div>
+      <!-- Add new category inline form -->
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid rgba(201,168,76,0.08)">
+        <div class="fgroup" style="margin:0;flex:1;min-width:150px">
+          <label>Category Name *</label>
+          <input type="text" id="newCatName" placeholder="e.g. Kitchenware, Furniture…"/>
+        </div>
+        <div class="fgroup" style="margin:0;width:90px">
+          <label>Emoji (optional)</label>
+          <input type="text" id="newCatEmoji" placeholder="🍽️" maxlength="4"/>
+        </div>
+        <button class="btn-gold" onclick="createCategory()" style="margin-bottom:0">+ Add Category</button>
+        <span id="catMsg" style="font-size:12px;color:#C9A84C;align-self:center"></span>
+      </div>
+      <!-- Existing categories list -->
+      <div id="catListContainer"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- Edit Category Modal -->
+  <div id="editCatModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:9998;align-items:center;justify-content:center;padding:20px">
+    <div style="background:#111118;border:1px solid rgba(201,168,76,0.25);border-radius:18px;padding:28px;width:100%;max-width:360px;box-shadow:0 40px 100px rgba(0,0,0,0.6)">
+      <div style="font-family:'Cinzel',serif;font-size:17px;font-weight:600;color:#E8C97A;margin-bottom:18px">✏️ Edit Category</div>
+      <input type="hidden" id="editCatId"/>
+      <div class="fgroup"><label>Category Name *</label>
+        <input type="text" id="editCatName" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/>
+      </div>
+      <div class="fgroup"><label>Emoji (optional — leave blank for none)</label>
+        <input type="text" id="editCatEmoji" maxlength="4" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button class="btn-gold" onclick="saveCategoryEdit()">💾 Save</button>
+        <button class="btn-ghost" onclick="closeEditCat()">Cancel</button>
+        <span id="editCatMsg" style="font-size:12px;color:#C9A84C;align-self:center"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <!-- STOCK -->
+  <!-- STOCK DASHBOARD -->
+  <div class="panel" id="panel-stockdash">
+    <div class="ph"><h1>Stock Dashboard</h1><p>Company → Product overview with edit</p></div>
+    <!-- Summary cards -->
+    <div class="stats-grid" id="sdSummaryCards" style="margin-bottom:22px">
+      <div class="loading" style="grid-column:1/-1"><div class="spinner"></div>Loading…</div>
+    </div>
+    <!-- Company list / Product detail / Edit modal -->
+    <div class="pbox">
+      <div class="pbox-header">
+        <div class="pbox-title" id="sdBreadcrumb">All Companies</div>
+        <button class="btn-ghost" id="sdBackBtn" style="display:none;font-size:11px;padding:7px 14px" onclick="sdBack()">← Back</button>
+      </div>
+      <div id="sdView"></div>
+    </div>
+  </div>
+
+  <!-- Edit Stock Modal -->
+  <div id="editStockModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:9998;align-items:center;justify-content:center;padding:20px">
+    <div style="background:#111118;border:1px solid rgba(201,168,76,0.25);border-radius:18px;padding:30px;width:100%;max-width:400px;box-shadow:0 40px 100px rgba(0,0,0,0.6)">
+      <div style="font-family:'Cinzel',serif;font-size:18px;font-weight:600;color:#E8C97A;margin-bottom:20px">✏️ Edit Stock Entry</div>
+      <input type="hidden" id="editStockId"/>
+      <div class="fgroup"><label>Product Name</label><input type="text" id="editStockProd" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/></div>
+      <div class="fgroup"><label>Company</label><input type="text" id="editStockCo" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="fgroup"><label>Qty</label><input type="number" id="editStockQty" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/></div>
+        <div class="fgroup"><label>Cost Price ₹</label><input type="number" id="editStockCost" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/></div>
+        <div class="fgroup"><label>Sell Price ₹</label><input type="number" id="editStockSell" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/></div>
+        <div class="fgroup"><label>Date</label><input type="date" id="editStockDate" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/></div>
+      </div>
+      <div class="fgroup"><label>Note</label><input type="text" id="editStockNote" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/></div>
+      <div style="display:flex;gap:10px;margin-top:6px">
+        <button class="btn-gold" onclick="saveStockEdit()">💾 Save</button>
+        <button class="btn-ghost" onclick="closeEditStock()">Cancel</button>
+        <span id="editStockMsg" style="font-size:12px;color:#C9A84C;align-self:center"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-stock">
+    <div class="ph"><h1>Stock Management</h1><p>Track stock received and sold — company &amp; product wise</p></div>
+
+    <!-- Add Stock Entry -->
+    <div class="pbox">
+      <div class="pbox-header"><div class="pbox-title">Add Stock Entry</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="fgroup" style="margin:0"><label>Company / Brand *</label>
+          <input type="text" id="stCompany" placeholder="e.g. ADR, Apple, Veeram…" oninput="filterStockProds()" list="companyList" autocomplete="off"/>
+          <datalist id="companyList"></datalist>
+        </div>
+        <div class="fgroup" style="margin:0"><label>Type *</label>
+          <select id="stType"><option value="purchase">📥 Purchase (Received)</option><option value="sale">📤 Sale (Sold)</option></select>
+        </div>
+        <div class="fgroup" style="margin:0"><label>Date *</label><input type="date" id="stDate"/></div>
+      </div>
+      <!-- Multi-select products from this company -->
+      <div class="fgroup" style="margin-bottom:12px">
+        <label>Select Products (multi-select)</label>
+        <div id="stProdList" style="border:1px solid rgba(201,168,76,0.14);border-radius:9px;background:rgba(255,255,255,0.03);padding:10px;min-height:60px;max-height:200px;overflow-y:auto">
+          <div style="color:var(--muted);font-size:12px;padding:6px">Enter company name above to see products…</div>
+        </div>
+      </div>
+      <!-- Per-product qty/price table (filled after selection) -->
+      <div id="stQtyTable" style="display:none;margin-bottom:12px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C9A84C;margin-bottom:8px">Set Quantity &amp; Price per Product</div>
+        <div id="stQtyRows" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="fgroup" style="margin:0"><label>Default Sell Price ₹ (optional fallback)</label><input type="number" id="stSellPrice" placeholder="Per-product if blank" min="0"/></div>
+        <div class="fgroup" style="margin:0"><label>Note</label><input type="text" id="stNote" placeholder="Supplier / Customer name…"/></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn-gold" onclick="addStockEntry()">+ Add Entry</button>
+        <span id="stMsg" style="font-size:13px;color:#C9A84C"></span>
+      </div>
+    </div>
+
+    <!-- Current Stock by Company → Product -->
+    <div class="pbox">
+      <div class="pbox-header">
+        <div class="pbox-title">Current Stock Levels</div>
+        <div style="display:flex;gap:8px">
+          <select id="stFilterCompany" onchange="loadStock()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);color:#F0EDE8;border-radius:7px;padding:6px 10px;font-family:Outfit,sans-serif;font-size:11px;outline:none">
+            <option value="">All Companies</option>
+          </select>
+          <button class="btn-ghost" style="font-size:11px;padding:7px 14px" onclick="loadStock()">↻</button>
+        </div>
+      </div>
+      <div id="stockGrid"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+
+    <!-- Stock History -->
+    <div class="pbox">
+      <div class="pbox-header">
+        <div class="pbox-title">Stock History</div>
+        <div style="display:flex;gap:8px">
+          <select id="stFilterProd" onchange="loadStockHistory()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);color:#F0EDE8;border-radius:7px;padding:6px 10px;font-family:Outfit,sans-serif;font-size:11px;outline:none">
+            <option value="">All Products</option>
+          </select>
+          <select id="stSortHist" onchange="loadStockHistory()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);color:#F0EDE8;border-radius:7px;padding:6px 10px;font-family:Outfit,sans-serif;font-size:11px;outline:none">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+      </div>
+      <div style="overflow-x:auto" id="stockHistoryContainer"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- LEDGER -->
+  <div class="panel" id="panel-ledger">
+    <div class="ph"><h1>Ledger</h1><p>Money in, money out, balance, GPay and Cash</p></div>
+    <div class="ldg-summary">
+      <div class="ldg-sum-card"><div class="ldg-sum-lbl">Total Received</div><div class="ldg-sum-val green" id="ldgIn">0</div></div>
+      <div class="ldg-sum-card"><div class="ldg-sum-lbl">Total Paid Out</div><div class="ldg-sum-val red" id="ldgOut">0</div></div>
+      <div class="ldg-sum-card"><div class="ldg-sum-lbl">Balance</div><div class="ldg-sum-val gold" id="ldgBal">0</div></div>
+    </div>
+    <div class="rpt-grid">
+      <div class="ldg-sum-card"><div class="ldg-sum-lbl">GPay Received</div><div class="ldg-sum-val green" id="ldgGpayIn">0</div></div>
+      <div class="ldg-sum-card"><div class="ldg-sum-lbl">Cash Received</div><div class="ldg-sum-val green" id="ldgCashIn">0</div></div>
+      <div class="ldg-sum-card"><div class="ldg-sum-lbl">GPay Paid</div><div class="ldg-sum-val red" id="ldgGpayOut">0</div></div>
+      <div class="ldg-sum-card"><div class="ldg-sum-lbl">Cash Paid</div><div class="ldg-sum-val red" id="ldgCashOut">0</div></div>
+    </div>
+    <div class="ldg-tabs">
+      <button class="ldg-tab on" id="ldgTabMain"  onclick="ldgSetView('main',this)">📒 Transactions</button>
+      <button class="ldg-tab"    id="ldgTabCusts" onclick="ldgSetView('customers',this)">👤 Customers</button>
+    </div>
+    <div id="ldgViewMain">
+    <div class="ldg-tabs" style="margin-bottom:14px">
+      <button class="ldg-tab on" id="ldgTimeAll"   onclick="ldgSetFilter('all',this)">All Time</button>
+      <button class="ldg-tab"    id="ldgTimeToday" onclick="ldgSetFilter('today',this)">Today</button>
+      <button class="ldg-tab"    id="ldgTimeWeek"  onclick="ldgSetFilter('week',this)">This Week</button>
+      <button class="ldg-tab"    id="ldgTimeMonth" onclick="ldgSetFilter('month',this)">This Month</button>
+    </div>
+    <div class="pbox">
+      <div class="pbox-header"><div class="pbox-title">Add Transaction</div></div>
+      <div class="entry-form" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr">
+        <div class="fgroup"><label>Type</label><select id="ldgType"><option value="in">Money In Received</option><option value="out">Money Out Paid</option></select></div>
+        <div class="fgroup"><label>Amount</label><input type="number" id="ldgAmt" placeholder="0" min="0"/></div>
+        <div class="fgroup"><label>Payment Mode</label><select id="ldgMode"><option value="cash">Hand Cash</option><option value="gpay">GPay</option><option value="bank">Bank Transfer</option></select></div>
+        <div class="fgroup"><label>Date</label><input type="date" id="ldgDate"/></div>
+        <div class="fgroup"><label>Description</label><input type="text" id="ldgDesc" placeholder="Customer or Supplier name..."/></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn-gold" onclick="addLedgerEntry()">+ Add Transaction</button>
+        <span id="ldgMsg" style="font-size:13px;color:#C9A84C"></span>
+      </div>
+    </div>
+    <div class="pbox">
+      <div class="pbox-header"><div class="pbox-title">Transaction History</div><button class="btn-ghost" style="font-size:11px;padding:7px 14px" onclick="loadLedger()">↻ Refresh</button></div>
+      <div style="overflow-x:auto" id="ledgerContainer"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    </div><!-- /ldgViewMain -->
+
+    <!-- Customer Ledger View -->
+    <div id="ldgViewCustomers" style="display:none">
+      <!-- Outstanding summary top -->
+      <div class="ldg-summary">
+        <div class="ldg-sum-card"><div class="ldg-sum-lbl">Total Outstanding (They Owe)</div><div class="ldg-sum-val red" id="custTotalOwed">₹0</div></div>
+        <div class="ldg-sum-card"><div class="ldg-sum-lbl">Total I Need to Pay</div><div class="ldg-sum-val green" id="custTotalIPay">₹0</div></div>
+        <div class="ldg-sum-card"><div class="ldg-sum-lbl">Net Balance</div><div class="ldg-sum-val gold" id="custNetBal">₹0</div></div>
+      </div>
+
+      <!-- Add Customer -->
+      <div class="pbox" style="margin-bottom:16px">
+        <div class="pbox-header"><div class="pbox-title">Add Customer / Party</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+          <div class="fgroup" style="margin:0;flex:1;min-width:160px"><label>Name *</label><input type="text" id="newCustName" placeholder="e.g. Mani, Ravi…"/></div>
+          <div class="fgroup" style="margin:0;flex:1;min-width:140px"><label>Phone</label><input type="tel" id="newCustPhone" placeholder="9XXXXXXXXX"/></div>
+          <button class="btn-gold" onclick="addCustomer()" style="margin-bottom:0">+ Add</button>
+          <span id="newCustMsg" style="font-size:12px;color:#C9A84C;align-self:center"></span>
+        </div>
+      </div>
+
+      <!-- Customer cards grid -->
+      <div id="custDetailBox" style="display:none">
+        <div class="pbox">
+          <div class="pbox-header">
+            <div>
+              <div class="pbox-title" id="custDetailName">—</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:3px" id="custDetailPhone"></div>
+            </div>
+            <button class="btn-ghost" style="font-size:11px;padding:7px 14px" onclick="closeCustDetail()">← All Customers</button>
+          </div>
+          <!-- Balance summary -->
+          <div class="ldg-summary" style="margin-bottom:16px">
+            <div class="ldg-sum-card"><div class="ldg-sum-lbl">I Gave (Paid Out)</div><div class="ldg-sum-val red" id="custGave">₹0</div></div>
+            <div class="ldg-sum-card"><div class="ldg-sum-lbl">I Got (Received)</div><div class="ldg-sum-val green" id="custGot">₹0</div></div>
+            <div class="ldg-sum-card"><div class="ldg-sum-lbl">Pending Balance</div><div class="ldg-sum-val gold" id="custPending">₹0</div></div>
+          </div>
+          <!-- Add transaction -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px;align-items:end">
+            <div class="fgroup" style="margin:0"><label>Type</label>
+              <select id="custTxType" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none">
+                <option value="gave">💸 I Gave (paid them)</option>
+                <option value="got">💰 I Got (they paid me)</option>
+              </select>
+            </div>
+            <div class="fgroup" style="margin:0"><label>Amount ₹</label><input type="number" id="custTxAmt" placeholder="0" min="0" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/></div>
+            <div class="fgroup" style="margin:0"><label>Mode</label>
+              <select id="custTxMode" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none">
+                <option value="cash">💵 Hand Cash</option>
+                <option value="gpay">📱 GPay</option>
+                <option value="bank">🏦 Bank Transfer</option>
+              </select>
+            </div>
+            <div class="fgroup" style="margin:0"><label>Date</label><input type="date" id="custTxDate" style="width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none"/></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px">
+            <input type="text" id="custTxNote" placeholder="Note (e.g. for rice, returned…)" style="flex:1;padding:10px 13px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.14);font-family:Outfit,sans-serif;font-size:13px;color:#F0EDE8;outline:none;"/>
+            <button class="btn-gold" onclick="addCustTransaction()">+ Add</button>
+            <span id="custTxMsg" style="font-size:12px;color:#C9A84C"></span>
+          </div>
+          <!-- Sort + transaction list -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+            <div style="font-size:12px;color:var(--muted)">Transaction History</div>
+            <select id="custTxSort" onchange="renderCustTx()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);color:#F0EDE8;border-radius:7px;padding:6px 10px;font-family:Outfit,sans-serif;font-size:11px;outline:none">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="highest">Highest Amount</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto" id="custTxList"></div>
+        </div>
+      </div>
+
+      <!-- Customer cards (shown when no customer selected) -->
+      <div id="customerSummaryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px"></div>
+    </div>
+
+  </div><!-- /panel-ledger -->
+
+  <div class="panel" id="panel-users">
+    <div class="ph"><h1>Users</h1><p id="usersSubtitle">All registered customers</p></div>
+    <!-- Staff Management (admin only) -->
+    <div class="pbox">
+      <div class="pbox-header"><div class="pbox-title">👔 Staff Accounts</div><button class="btn-ghost" style="font-size:11px;padding:7px 14px" onclick="loadStaffList()">↻ Refresh</button></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px">
+        Staff can: view dashboard, update order status, manage products, view stock dashboard, add stock entries.<br>
+        Staff cannot: delete anything, view users tab, view ledger tab.
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(201,168,76,0.08)">
+        <div class="fgroup" style="margin:0;flex:1;min-width:200px"><label>Staff Email Address</label>
+          <input type="email" id="staffEmailInput" placeholder="staff@example.com"/>
+        </div>
+        <button class="btn-gold" onclick="addStaffEmail()">+ Add Staff</button>
+        <span id="staffMsg" style="font-size:12px;color:#C9A84C;align-self:center"></span>
+      </div>
+      <div id="staffListContainer"><div class="loading">Loading staff list…</div></div>
+    </div>
+    <div class="pbox">
+      <div style="overflow-x:auto" id="usersContainer"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+
+</div><!-- end .main -->
+
+<!-- ── EDIT PRODUCT MODAL ── -->
+<div id="editProdModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(10px);z-index:9998;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto">
+  <div style="background:#111118;border:1px solid rgba(201,168,76,0.25);border-radius:20px;padding:28px 24px;width:100%;max-width:560px;box-shadow:0 40px 100px rgba(0,0,0,0.7);margin:auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+      <div style="font-family:'Cinzel',serif;font-size:18px;font-weight:600;color:#E8C97A">✏️ Edit Product</div>
+      <button onclick="closeEditProduct()" style="background:transparent;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:4px">×</button>
+    </div>
+    <input type="hidden" id="editProdId"/>
+    <div class="prod-form-grid">
+      <div class="fgroup"><label>Product Name *</label><input type="text" id="editPName" placeholder="e.g. Plastic Chair"/></div>
+      <div class="fgroup"><label>Category *</label>
+        <select id="editPCat">
+          <option value="">— Select —</option>
+        </select>
+      </div>
+      <div class="fgroup"><label>Price ₹ *</label><input type="number" id="editPPrice" placeholder="450" min="1"/></div>
+      <div class="fgroup"><label>Tag (optional)</label><input type="text" id="editPTag" placeholder="Popular / New / Best Seller"/></div>
+      <div class="fgroup"><label>Emoji Icon</label><input type="text" id="editPEmoji" placeholder="🪑" maxlength="4"/></div>
+      <div class="fgroup"><label>Company / Brand</label><input type="text" id="editPCompany" placeholder="e.g. ADR, Apple…"/></div>
+      <div class="fgroup span2"><label>Description *</label><textarea id="editPDesc" placeholder="Short product description…" style="resize:vertical;min-height:70px"></textarea></div>
+      <!-- Image section -->
+      <div class="fgroup span2">
+        <label>Product Image (PNG only)</label>
+        <!-- Current image preview -->
+        <div id="editPCurrentImg" style="display:none;margin-bottom:10px">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:6px">Current image:</div>
+          <img id="editPCurrentImgEl" src="" style="height:80px;width:auto;border-radius:8px;border:1px solid rgba(201,168,76,0.2);object-fit:contain"/>
+          <button onclick="clearEditImage()" style="display:block;margin-top:6px;font-size:10px;color:rgba(255,107,107,0.7);background:transparent;border:none;cursor:pointer;text-decoration:underline">✕ Remove image</button>
+        </div>
+        <!-- New image upload -->
+        <div class="drop-zone" id="editDropZone" style="padding:16px">
+          <input type="file" id="editImgFile" accept=".png,image/png" onchange="handleEditFile(this.files[0])"/>
+          <div class="dz-ico" style="font-size:24px">🖼️</div>
+          <div class="dz-txt">
+            <strong id="editDzTxt">Drop new PNG to replace image</strong>
+            <span>Only .PNG files</span>
+          </div>
+        </div>
+        <div class="img-preview" id="editImgPreview" style="display:none;margin-top:10px;text-align:center">
+          <img id="editImgPreviewEl" src="" style="max-height:80px;border-radius:8px;border:1px solid rgba(201,168,76,0.2)"/>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px" id="editImgName"></div>
+          <span onclick="cancelEditNewImage()" style="font-size:10px;color:rgba(255,107,107,0.7);cursor:pointer;text-decoration:underline">✕ Cancel new image</span>
+        </div>
+        <input type="hidden" id="editPImgData"/>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap">
+      <button class="btn-gold" onclick="saveProductEdit()">💾 Save Changes</button>
+      <button class="btn-ghost" onclick="closeEditProduct()">Cancel</button>
+      <span id="editPMsg" style="font-size:12px;color:#C9A84C"></span>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Mobile bottom nav -->
+<nav class="mob-nav">
+  <div class="mob-nav-inner">
+    <button class="mob-btn active" id="mob-dashboard" onclick="show('dashboard',this);closeMobMore()"><span class="si">📊</span>Home</button>
+    <button class="mob-btn" id="mob-orders"   onclick="show('orders',this);closeMobMore()"><span class="si">📦</span>Orders<span class="mob-count" id="mobOrderCount" style="display:none"></span></button>
+    <button class="mob-btn" id="mob-products" onclick="show('products',this);closeMobMore()"><span class="si">🏷️</span>Products</button>
+    <button class="mob-btn" id="mob-ledger"   onclick="show('ledger',this);closeMobMore()"><span class="si">📒</span>Ledger</button>
+    <!-- hidden for staff via applyRoleUI -->
+    <button class="mob-btn" id="mobMoreBtn"   onclick="toggleMobMore()"><span class="si">⋯</span>More</button>
+  </div>
+</nav>
+
+<!-- Mobile More Drawer -->
+<div id="mobMoreDrawer" style="display:none;position:fixed;bottom:64px;left:0;right:0;z-index:499;background:#111118;border-top:1px solid rgba(201,168,76,0.15);padding:12px 16px;box-shadow:0 -8px 32px rgba(0,0,0,0.5)">
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+    <button class="mob-btn" id="mob-users"     onclick="show('users',this);closeMobMore()"     style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px 6px"><span class="si">👥</span>Users</button>
+    <!-- hidden for staff via applyRoleUI -->
+    <button class="mob-btn" id="mob-stockdash" onclick="show('stockdash',this);closeMobMore()" style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px 6px"><span class="si">📈</span>StockDash</button>
+    <button class="mob-btn" id="mob-stock"     onclick="show('stock',this);closeMobMore()"     style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px 6px"><span class="si">📦</span>Stock</button>
+    <a href="index.html" target="_blank" class="mob-btn" style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px 6px"><span class="si">🌐</span>Site</a>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth(), db = firebase.firestore();
+
+// ── Role detection ──
+// Staff emails — add any email here to give staff access
+const STAFF_EMAILS = []; // e.g. ["staff1@gmail.com","staff2@gmail.com"]
+let currentRole = 'none'; // 'admin' | 'staff' | 'none'
+
+function isAdmin() { return currentRole === 'admin'; }
+function isStaff() { return currentRole === 'staff' || currentRole === 'admin'; }
+
+// ── Auth guard ──
+auth.onAuthStateChanged(async user => {
+  if (!user) { window.location.href = 'login.html'; return; }
+  if (ADMIN_EMAILS.includes(user.email)) {
+    currentRole = 'admin';
+  } else {
+    // Check Firestore staff collection for dynamic staff
+    try {
+      const staffSnap = await db.collection('staff').where('email','==',user.email).get();
+      if (!staffSnap.empty) {
+        currentRole = 'staff';
+        if (!STAFF_EMAILS.includes(user.email)) STAFF_EMAILS.push(user.email);
+      } else {
+        alert('Access denied. Admins and staff only.');
+        auth.signOut(); window.location.href = 'login.html'; return;
+      }
+    } catch(e) {
+      alert('Access denied.');
+      auth.signOut(); window.location.href = 'login.html'; return;
+    }
+  }
+  document.getElementById('adminEmail').textContent = user.email;
+  applyRoleUI();
+  loadDashboard();
+});
+
+function applyRoleUI() {
+  if (isAdmin()) return; // admin sees everything — no restrictions
+  // ── STAFF restrictions ──
+  // 1. Hide sidebar: Users, Ledger
+  ['sb-btn-users','sb-btn-ledger'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  // 2. Hide mobile nav: Users, Ledger
+  ['mob-users','mob-ledger'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  // 3. Hide orders bulk delete bar
+  const obBar = document.getElementById('ordersBulkBar');
+  if (obBar) obBar.style.display = 'none';
+  // 4. Staff label
+  const emailEl = document.getElementById('adminEmail');
+  if (emailEl) emailEl.innerHTML += ' <span style="background:rgba(74,144,226,0.15);color:rgba(74,144,226,0.9);font-size:9px;padding:2px 7px;border-radius:100px;border:1px solid rgba(74,144,226,0.25)">STAFF</span>';
+  // 5. Inject CSS to hide delete columns in orders table for staff
+  const style = document.createElement('style');
+  style.textContent = `
+    /* Staff: hide order delete column header and cells */
+    #ordersContainer .tbl thead tr th:last-child,
+    #ordersContainer .tbl tbody tr td:last-child { display:none !important; }
+    /* Staff: hide checkbox column in orders */
+    #ordersContainer .tbl thead tr th:first-child,
+    #ordersContainer .tbl tbody tr td:first-child { display:none !important; }
+    /* Staff: hide stock history delete column */
+    #stockHistoryContainer .tbl thead tr th:last-child,
+    #stockHistoryContainer .tbl tbody tr td:last-child { display:none !important; }
+    /* Staff: hide sd delete column */
+    #sdView .tbl thead tr th:last-child,
+    #sdView .tbl tbody tr td:last-child { display:none !important; }
+  `;
+  document.head.appendChild(style);
+}
+function doLogout() { auth.signOut().then(() => window.location.href = 'login.html'); }
+
+// ── Panel switcher ──
+function show(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.sb-btn, .mob-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('show');
+  if (btn) btn.classList.add('active');
+  const mob = document.getElementById('mob-' + name);
+  if (mob) mob.classList.add('active');
+  if (name === 'orders')   loadOrders();
+  if (name === 'products') loadProducts();
+  if (name === 'users')    loadUsers();
+  if (name === 'stock')     loadStock();
+  if (name === 'stockdash') loadStockDashboard();
+  if (name === 'ledger')   loadLedger();
+}
+
+// ── DASHBOARD ──
+async function loadDashboard() {
+  try {
+    let orders = [], userCount = 0;
+    try {
+      const oSnap = await db.collection('orders').get();
+      orders = oSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    } catch(e) {
+      document.getElementById('recentOrders').innerHTML =
+        `<div style="color:rgba(255,107,107,0.9);padding:16px;font-size:13px">⚠ Could not load orders. Check Firestore rules.<br><small>${e.message}</small></div>`;
+    }
+    try {
+      const uSnap = await db.collection('users').get();
+      userCount = uSnap.size;
+    } catch(e) {}
+
+    const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+    const pending = orders.filter(o => o.status === 'pending').length;
+    document.getElementById('stOrders').textContent  = orders.length;
+    document.getElementById('stRevenue').textContent = '₹' + revenue;
+    document.getElementById('stPending').textContent = pending;
+    document.getElementById('stUsers').textContent   = userCount;
+    document.getElementById('sbOrderCount').textContent = pending || '';
+    const mobC = document.getElementById('mobOrderCount');
+    if(pending > 0){ mobC.textContent = pending; mobC.style.display = 'inline'; }
+    else { mobC.style.display = 'none'; }
+
+    const sorted = [...orders].sort((a, b) => {
+      return (b.createdAt ? b.createdAt.toMillis() : 0) - (a.createdAt ? a.createdAt.toMillis() : 0);
+    });
+    if (orders.length > 0) renderOrdersTable(sorted.slice(0, 5), 'recentOrders', true);
+    else document.getElementById('recentOrders').innerHTML = '<div class="loading">No orders yet.</div>';
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+// ── ORDERS ──
+async function loadOrders() {
+  document.getElementById('ordersContainer').innerHTML = '<div class="loading"><div class="spinner"></div>Loading orders…</div>';
+  try {
+    const snap = await db.collection('orders').get();
+    const orders = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (b.createdAt ? b.createdAt.toMillis() : 0) - (a.createdAt ? a.createdAt.toMillis() : 0));
+    document.getElementById('ordersSubtitle').textContent = orders.length + ' total orders';
+    renderOrdersTable(orders, 'ordersContainer', false);
+  } catch(e) {
+    document.getElementById('ordersContainer').innerHTML =
+      `<div style="color:rgba(255,107,107,0.9);padding:20px;font-size:13px">⚠ Could not load orders.<br><small>${e.message}</small></div>`;
+  }
+}
+
+function renderOrdersTable(orders, containerId, mini) {
+  const el = document.getElementById(containerId);
+  if (!orders.length) { el.innerHTML = '<div class="loading">No orders yet.</div>'; return; }
+
+  const rows = orders.map(o => {
+    const date = o.createdAt
+      ? o.createdAt.toDate().toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' })
+      : '—';
+    const items = o.items ? o.items.map(i => `${i.emoji || ''} ${i.name} ×${i.qty}`).join('<br>') : '—';
+    const sc  = statusClass(o.status);
+    const del = o.delivery || {};
+    const num = o.myOrderNum
+      ? `<span style="font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:#C9A84C">#${o.myOrderNum}</span>`
+      : `<span style="font-size:11px;color:var(--faint)">${o.id.slice(0,8)}…</span>`;
+
+    return `<tr>
+      ${!mini?`<td><input type="checkbox" class="orderChk" value="${o.id}" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer"/></td>`:''}
+      <td>${num}</td>
+      <td>
+        <div>${o.userEmail || '—'}</div>
+        ${del.name ? `<div style="font-size:11px;color:var(--muted)">${del.name} · ${del.phone || ''}</div>` : ''}
+      </td>
+      ${!mini ? `<td style="font-size:12px;color:var(--muted);max-width:180px;line-height:1.6">${items}</td>` : ''}
+      <td style="color:#C9A84C;font-weight:700;font-family:'Cinzel',serif">₹${o.total || 0}</td>
+      <td><span class="badge ${sc}">${o.status || 'pending'}</span></td>
+      ${!mini ? `<td style="font-size:12px;color:var(--muted)">${del.address || '—'}<br>${del.city || ''} ${del.pin || ''}</td>` : ''}
+      <td style="font-size:11px;color:var(--muted);white-space:nowrap">${date}</td>
+      ${!mini ? `
+      <td>
+        <select class="status-sel" onchange="updateOrderStatus('${o.id}',this.value)">
+          <option value="pending"   ${o.status==='pending'  ?'selected':''}>⏳ Pending</option>
+          <option value="confirmed" ${o.status==='confirmed'?'selected':''}>✅ Confirmed</option>
+          <option value="shipped"   ${o.status==='shipped'  ?'selected':''}>🚚 Shipped</option>
+          <option value="delivered" ${o.status==='delivered'?'selected':''}>🎉 Delivered</option>
+          <option value="cancelled" ${o.status==='cancelled'?'selected':''}>❌ Cancelled</option>
+        </select>
+      </td>
+      ${isAdmin() ? `<td><button class="btn-danger" onclick="deleteOrder('${o.id}')">🗑 Delete</button></td>` : '<td></td>'}
+      ` : ''}
+    </tr>`;
+  }).join('');
+
+  const headers = mini
+    ? `<tr><th>Order #</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr>`
+    : `<tr><th><input type="checkbox" id="selAllOrders" onchange="toggleSelectAll('orderChk',this.checked)" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer"/></th><th>Order #</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Address</th><th>Date</th><th>Update</th><th>Delete</th></tr>`;
+
+  el.innerHTML = `<div style="overflow-x:auto"><table class="tbl"><thead>${headers}</thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function statusClass(s) {
+  return {pending:'badge-warning',confirmed:'badge-info',shipped:'badge-gold',delivered:'badge-success',cancelled:'badge-danger'}[s] || 'badge-warning';
+}
+
+async function updateOrderStatus(id, status) {
+  try {
+    await db.collection('orders').doc(id).update({ status });
+    showToast('✅ Status updated to ' + status);
+  } catch(e) { showToast('❌ Failed: ' + e.message); }
+}
+
+async function deleteOrder(id) {
+  if (!confirm('Delete this order permanently? This cannot be undone.')) return;
+  try {
+    await db.collection('orders').doc(id).delete();
+    showToast('🗑 Order deleted');
+    loadOrders();
+  } catch(e) { showToast('❌ Failed: ' + e.message); }
+}
+
+// ── PRODUCTS ──
+let formVisible = true;
+function toggleForm() {
+  formVisible = !formVisible;
+  document.getElementById('addForm').style.display = formVisible ? '' : 'none';
+}
+
+let prodDocs = []; // cached for drag-drop
+
+async function loadProducts() {
+  document.getElementById('productsContainer').innerHTML = '<div class="loading"><div class="spinner"></div>Loading…</div>';
+  try {
+    let snap;
+    // Fetch all then sort client-side — avoids Firestore index requirement
+    snap = await db.collection('products').get();
+    // Sort by sortOrder if set, otherwise by createdAt
+    const sorted = snap.docs.sort((a,b)=>{
+      const ao = a.data().sortOrder;
+      const bo = b.data().sortOrder;
+      if(ao!=null && bo!=null) return ao-bo;
+      if(ao!=null) return -1;
+      if(bo!=null) return 1;
+      const at = a.data().createdAt?.toMillis?.() || 0;
+      const bt = b.data().createdAt?.toMillis?.() || 0;
+      return at-bt;
+    });
+    snap = { empty: snap.empty, docs: sorted };
+    if (snap.empty) {
+      document.getElementById('productsContainer').innerHTML =
+        '<div class="loading">No products yet. Add one above.</div>';
+      return;
+    }
+    prodDocs = snap.docs.map(d => ({id:d.id,...d.data()}));
+    renderProductList();
+  } catch(e) {
+    document.getElementById('productsContainer').innerHTML =
+      `<div style="color:rgba(255,107,107,0.9);padding:20px">⚠ ${e.message}</div>`;
+  }
+}
+
+function renderProductList() {
+  const container = document.getElementById('productsContainer');
+  container.innerHTML = `
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px">
+      <span>⠿ Drag rows to reorder.</span>
+      <span style="color:var(--faint)">Top = first shown on website.</span>
+    </div>
+    <div id="prodDragList">` +
+    prodDocs.map((p,i) => {
+      const imgCell = p.img
+        ? `<img src="${p.img}" style="width:38px;height:38px;object-fit:contain;border-radius:7px;border:1px solid rgba(201,168,76,0.15);flex-shrink:0">`
+        : `<div style="width:38px;height:38px;border-radius:7px;background:rgba(201,168,76,0.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${p.emoji||'📦'}</div>`;
+      return `<div class="drag-row" draggable="true" data-id="${p.id}" data-idx="${i}"
+          style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(201,168,76,0.1);margin-bottom:8px;background:rgba(255,255,255,0.025)">
+        <span class="drag-handle" title="Drag to reorder">⠿</span>
+        ${imgCell}
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:600;font-size:14px;color:#F0EDE8;margin-bottom:2px">${p.name}</div>
+          <div style="font-size:11px;color:var(--muted)">${p.company||''}${p.company&&p.cat?' · ':''}${p.cat||''} ${p.price?'· ₹'+p.price:''}</div>
+        </div>
+        <span style="font-size:10px;color:var(--faint);min-width:28px;text-align:center">#${i+1}</span>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button class="btn-ghost" onclick="openEditProduct('${p.id}')" style="font-size:10px;padding:6px 10px">✏️ Edit</button>
+          <button class="btn-danger" onclick="deleteProduct('${p.id}')" style="font-size:10px;padding:6px 10px">🗑</button>
+        </div>
+      </div>`;
+    }).join('') +
+    `</div>`;
+
+  // Attach drag-drop listeners
+  initProdDragDrop();
+}
+
+function initProdDragDrop() {
+  const list = document.getElementById('prodDragList');
+  if (!list) return;
+  let dragSrc = null;
+
+  list.querySelectorAll('.drag-row').forEach(row => {
+    row.addEventListener('dragstart', e => {
+      dragSrc = row;
+      row.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    row.addEventListener('dragend', () => {
+      row.classList.remove('dragging');
+      list.querySelectorAll('.drag-row').forEach(r => r.classList.remove('drag-over-top','drag-over-bot'));
+    });
+    row.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (row === dragSrc) return;
+      list.querySelectorAll('.drag-row').forEach(r => r.classList.remove('drag-over-top','drag-over-bot'));
+      const rect = row.getBoundingClientRect();
+      const mid  = rect.top + rect.height/2;
+      row.classList.add(e.clientY < mid ? 'drag-over-top' : 'drag-over-bot');
+    });
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      if (!dragSrc || row === dragSrc) return;
+      const rect = row.getBoundingClientRect();
+      const mid  = rect.top + rect.height/2;
+      const before = e.clientY < mid;
+      list.insertBefore(dragSrc, before ? row : row.nextSibling);
+      row.classList.remove('drag-over-top','drag-over-bot');
+      saveProdOrder();
+    });
+  });
+}
+
+async function saveProdOrder() {
+  const list = document.getElementById('prodDragList');
+  if (!list) return;
+  const rows = list.querySelectorAll('.drag-row');
+  const batch = db.batch();
+  rows.forEach((row, idx) => {
+    const id = row.getAttribute('data-id');
+    batch.update(db.collection('products').doc(id), { sortOrder: idx });
+    // Update rank label
+    const rankEl = row.querySelector('span[style*="color:var(--faint)"]');
+    if (rankEl) rankEl.textContent = '#' + (idx+1);
+  });
+  try {
+    await batch.commit();
+    showToast('✅ Order saved! Products reordered on website.');
+    // Rebuild prodDocs order to match DOM
+    const newOrder = [...rows].map(r=>r.getAttribute('data-id'));
+    prodDocs.sort((a,b)=>newOrder.indexOf(a.id)-newOrder.indexOf(b.id));
+  } catch(e) { showToast('❌ Save failed: '+e.message); }
+}
+
+// ── DRAG & DROP IMAGE ──
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  handleFile(file);
+});
+
+function handleFile(file) {
+  if (!file) return;
+  if (file.type !== 'image/png') { showToast('⚠ Only PNG files are accepted'); return; }
+  // Compress to max 400px (HD quality) at JPEG 0.82 — stays under ~80KB which fits Firestore
+  const imgEl = new Image();
+  const objURL = URL.createObjectURL(file);
+  imgEl.onload = () => {
+    URL.revokeObjectURL(objURL);
+    const MAX = 400;
+    let w = imgEl.width, h = imgEl.height;
+    if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
+    else        { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
+    const cv = document.createElement('canvas');
+    cv.width = w; cv.height = h;
+    cv.getContext('2d').drawImage(imgEl, 0, 0, w, h);
+    const dataURL = cv.toDataURL('image/jpeg', 0.82);
+    // Check size — if > 900KB warn and compress more
+    if (dataURL.length > 900000) {
+      cv.getContext('2d').drawImage(imgEl, 0, 0, w, h);
+      const dataURL2 = cv.toDataURL('image/jpeg', 0.55);
+      document.getElementById('pImgData').value = dataURL2;
+      document.getElementById('imgName').textContent = file.name + ' (auto-compressed)';
+    } else {
+      document.getElementById('pImgData').value = dataURL;
+      document.getElementById('imgName').textContent = file.name + ' (' + w + 'x' + h + 'px)';
+    }
+    document.getElementById('pImgName').value = file.name;
+    document.getElementById('imgPreviewEl').src = document.getElementById('pImgData').value;
+    document.getElementById('imgPreview').style.display = 'block';
+    dropZone.querySelector('.dz-txt strong').textContent = '✓ Image ready';
+  };
+  imgEl.onerror = () => showToast('❌ Could not load image');
+  imgEl.src = objURL;
+}
+
+function clearImage() {
+  document.getElementById('pImgData').value = '';
+  document.getElementById('pImgName').value = '';
+  document.getElementById('imgPreviewEl').src = '';
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('imgFile').value = '';
+  dropZone.querySelector('.dz-txt strong').textContent = 'Drag & Drop your PNG image here';
+}
+
+async function addProduct() {
+  const name  = document.getElementById('pName').value.trim();
+  const price = parseFloat(document.getElementById('pPrice').value);
+  const desc  = document.getElementById('pDesc').value.trim();
+  const cat   = document.getElementById('pCat').value;
+  const missing = [];
+  if (!name)             missing.push('Product Name');
+  if (!price||isNaN(price)) missing.push('Price');
+  if (!desc)             missing.push('Description');
+  if (!cat)              missing.push('Category — add one in Manage Categories first');
+  if (missing.length) { document.getElementById('pMsg').textContent = '⚠ Fill: ' + missing.join(', '); return; }
+
+  const btn = document.getElementById('saveProdBtn');
+  if (!btn) { showToast('❌ Button not found'); return; }
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  try {
+    // Get current product count to assign next sortOrder
+    let nextOrder = 0;
+    try {
+      const countSnap = await db.collection('products').get();
+      nextOrder = countSnap.size;
+    } catch(e) {}
+    await db.collection('products').add({
+      name, price,
+      cat:       document.getElementById('pCat').value,
+      tag:       document.getElementById('pTag').value.trim(),
+      emoji:     document.getElementById('pEmoji').value.trim(),
+      company:   document.getElementById('pCompany').value.trim(),
+      img:       document.getElementById('pImgData').value,
+      desc,
+      sortOrder: nextOrder,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('pMsg').textContent = '✓ Product saved!';
+    setTimeout(() => document.getElementById('pMsg').textContent = '', 2500);
+    ['pName','pPrice','pTag','pEmoji','pCompany','pDesc'].forEach(id => document.getElementById(id).value = '');
+    clearImage();
+    loadProducts();
+  } catch(e) {
+    document.getElementById('pMsg').textContent = '❌ Error: ' + e.message;
+  }
+  const b2=document.getElementById('saveProdBtn'); if(b2){b2.disabled=false;b2.textContent='💾 Save Product';}
+}
+
+async function deleteProduct(id) {
+  if (!confirm('Delete this product?')) return;
+  await db.collection('products').doc(id).delete();
+  showToast('🗑 Product deleted');
+  loadProducts();
+}
+
+// ── EDIT PRODUCT ──
+function openEditProduct(id) {
+  const p = prodDocs.find(x => x.id === id);
+  if (!p) { showToast('⚠ Product not found'); return; }
+
+  document.getElementById('editProdId').value   = id;
+  document.getElementById('editPName').value    = p.name    || '';
+  document.getElementById('editPPrice').value   = p.price   || '';
+  document.getElementById('editPTag').value     = p.tag     || '';
+  document.getElementById('editPEmoji').value   = p.emoji   || '';
+  document.getElementById('editPCompany').value = p.company || '';
+  document.getElementById('editPDesc').value    = p.desc    || '';
+  document.getElementById('editPImgData').value = '';
+  document.getElementById('editPMsg').textContent = '';
+
+  // Populate category dropdown from current customCategories
+  const sel = document.getElementById('editPCat');
+  const defaults = [{value:'chairs',label:'Chairs & Stools'},{value:'buckets',label:'Buckets'},{value:'household',label:'Household'}];
+  sel.innerHTML = defaults.map(d=>`<option value="${d.value}" ${p.cat===d.value?'selected':''}>${d.label}</option>`).join('')
+    + customCategories.map(c=>`<option value="${c.id}" ${p.cat===c.id?'selected':''}>${c.emoji?c.emoji+' ':''}${c.name}</option>`).join('');
+
+  // Show current image if exists
+  const curImgDiv = document.getElementById('editPCurrentImg');
+  const curImgEl  = document.getElementById('editPCurrentImgEl');
+  if (p.img) {
+    curImgEl.src = p.img;
+    curImgDiv.style.display = '';
+  } else {
+    curImgDiv.style.display = 'none';
+    curImgEl.src = '';
+  }
+
+  // Reset new image preview
+  document.getElementById('editImgPreview').style.display = 'none';
+  document.getElementById('editImgPreviewEl').src = '';
+  document.getElementById('editImgName').textContent = '';
+  document.getElementById('editDzTxt').textContent = 'Drop new PNG to replace image';
+  document.getElementById('editImgFile').value = '';
+
+  document.getElementById('editProdModal').style.display = 'flex';
+}
+
+function closeEditProduct() {
+  document.getElementById('editProdModal').style.display = 'none';
+}
+
+function clearEditImage() {
+  // Mark image as cleared (empty string will remove it)
+  document.getElementById('editPImgData').value = '__CLEAR__';
+  document.getElementById('editPCurrentImg').style.display = 'none';
+  showToast('Image will be removed on save');
+}
+
+function cancelEditNewImage() {
+  document.getElementById('editPImgData').value = '';
+  document.getElementById('editImgPreview').style.display = 'none';
+  document.getElementById('editImgPreviewEl').src = '';
+  document.getElementById('editDzTxt').textContent = 'Drop new PNG to replace image';
+}
+
+function handleEditFile(file) {
+  if (!file) return;
+  if (file.type !== 'image/png') { showToast('⚠ Only PNG files accepted'); return; }
+  const imgEl = new Image();
+  const objURL = URL.createObjectURL(file);
+  imgEl.onload = () => {
+    URL.revokeObjectURL(objURL);
+    const MAX = 400;
+    let w = imgEl.width, h = imgEl.height;
+    if (w > h) { if (w > MAX) { h = Math.round(h*MAX/w); w = MAX; } }
+    else        { if (h > MAX) { w = Math.round(w*MAX/h); h = MAX; } }
+    const cv = document.createElement('canvas');
+    cv.width = w; cv.height = h;
+    cv.getContext('2d').drawImage(imgEl, 0, 0, w, h);
+    const data = cv.toDataURL('image/jpeg', 0.82);
+    document.getElementById('editPImgData').value = data;
+    document.getElementById('editImgPreviewEl').src = data;
+    document.getElementById('editImgName').textContent = file.name + ' (' + w + 'x' + h + 'px)';
+    document.getElementById('editImgPreview').style.display = '';
+    document.getElementById('editDzTxt').textContent = '✓ New image ready';
+  };
+  imgEl.onerror = () => showToast('❌ Cannot load image');
+  imgEl.src = objURL;
+}
+
+// Wire up edit drop zone
+document.addEventListener('DOMContentLoaded', () => {
+  const dz = document.getElementById('editDropZone');
+  if (!dz) return;
+  dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag-over');
+    handleEditFile(e.dataTransfer.files[0]);
+  });
+});
+
+async function saveProductEdit() {
+  const id    = document.getElementById('editProdId').value;
+  const name  = document.getElementById('editPName').value.trim();
+  const price = parseFloat(document.getElementById('editPPrice').value);
+  const desc  = document.getElementById('editPDesc').value.trim();
+  const msg   = document.getElementById('editPMsg');
+  const missing = [];
+  if (!name)              missing.push('Name');
+  if (!price||isNaN(price)) missing.push('Price');
+  if (!desc)              missing.push('Description');
+  if (missing.length) { msg.textContent = '⚠ Fill: ' + missing.join(', '); return; }
+
+  const btn = document.querySelector('#editProdModal .btn-gold');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  msg.textContent = '';
+
+  try {
+    const newImgData = document.getElementById('editPImgData').value;
+    const update = {
+      name,  price,
+      cat:     document.getElementById('editPCat').value,
+      tag:     document.getElementById('editPTag').value.trim(),
+      emoji:   document.getElementById('editPEmoji').value.trim(),
+      company: document.getElementById('editPCompany').value.trim(),
+      desc,
+    };
+    // Handle image: new upload, cleared, or keep existing
+    if (newImgData === '__CLEAR__') {
+      update.img = '';
+    } else if (newImgData) {
+      update.img = newImgData;
+    }
+    // If neither, don't touch img field (keeps existing)
+
+    await db.collection('products').doc(id).update(update);
+
+    // Update local cache
+    const idx = prodDocs.findIndex(p => p.id === id);
+    if (idx >= 0) prodDocs[idx] = { ...prodDocs[idx], ...update };
+
+    msg.textContent = '✅ Saved!';
+    setTimeout(() => { closeEditProduct(); loadProducts(); }, 700);
+    showToast('✅ Product "' + name + '" updated!');
+  } catch(e) {
+    msg.textContent = '❌ ' + e.message;
+  }
+  btn.disabled = false; btn.textContent = '💾 Save Changes';
+}
+
+// ── USERS ──
+async function loadUsers() {
+  if (!isAdmin()) { return; } // staff cannot access users
+  const container = document.getElementById('usersContainer');
+  container.innerHTML = '<div class="loading"><div class="spinner"></div>Loading users…</div>';
+  try {
+    const snap = await db.collection('users').get();
+
+    // Only show users who registered via the website (have name + email + role fields)
+    // Filter out any stray Firestore documents
+    const validDocs = snap.docs.filter(d => {
+      const u = d.data();
+      return u.email && u.name && u.role === 'user';
+    });
+
+    const total   = validDocs.length;
+    const pending = validDocs.filter(d => d.data().approved === false).length;
+    document.getElementById('usersSubtitle').textContent =
+      total + ' registered · ' + pending + ' pending approval';
+
+    if (!validDocs.length) {
+      container.innerHTML = '<div class="loading">No registered users yet.</div>';
+      return;
+    }
+
+    // Sort: pending first, then by newest date
+    const docs = validDocs.sort((a, b) => {
+      const ap = a.data().approved === false ? 0 : 1;
+      const bp = b.data().approved === false ? 0 : 1;
+      if (ap !== bp) return ap - bp;
+      const ta = a.data().createdAt ? a.data().createdAt.toMillis() : 0;
+      const tb = b.data().createdAt ? b.data().createdAt.toMillis() : 0;
+      return tb - ta;
+    });
+
+    const rows = docs.map(d => {
+      const u = d.data();
+      const uid = d.id;
+      const date = u.createdAt
+        ? u.createdAt.toDate().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'})
+        : '—';
+
+      let statusBadge, actionBtn;
+      if (ADMIN_EMAILS.includes(u.email)) {
+        statusBadge = '<span class="badge badge-gold">Admin</span>';
+        actionBtn   = '—';
+      } else if (u.approved === true) {
+        statusBadge = '<span class="badge badge-success">Approved</span>';
+        actionBtn   = `<button class="btn-danger" onclick="removeUser('${uid}','${(u.email||'').replace(/'/g,"\'")}')">🗑 Remove</button>`;
+      } else {
+        statusBadge = '<span class="badge badge-warning">⏳ Pending</span>';
+        actionBtn   = `
+          <button class="btn-gold" style="padding:7px 13px;font-size:10px;margin-bottom:4px" onclick="approveUser('${uid}')">✅ Approve</button>
+          <button class="btn-danger" onclick="removeUser('${uid}','${(u.email||'').replace(/'/g,"\'")}')">🗑 Remove</button>`;
+      }
+
+      return `<tr>
+        <td><input type="checkbox" class="userChk" value="${uid}" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer"/></td>
+        <td style="font-weight:600">${u.name || '—'}</td>
+        <td style="font-size:12px">${u.email || '—'}</td>
+        <td>${u.phone || '—'}</td>
+        <td>${statusBadge}</td>
+        <td style="font-size:12px;color:var(--muted)">${date}</td>
+        <td><div style="display:flex;flex-direction:column;gap:4px;align-items:flex-start">${actionBtn}</div></td>
+      </tr>`;
+    }).join('');
+
+    container.innerHTML =
+      `<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <button class="btn-danger" onclick="bulkDeleteUsers()" style="font-size:11px">🗑 Delete Selected Users</button>
+        <span id="userSelCount" style="font-size:12px;color:var(--muted);align-self:center"></span>
+      </div>
+      <div style="overflow-x:auto"><table class="tbl">
+        <thead><tr><th><input type="checkbox" id="selAllUsers" onchange="toggleSelectAll('userChk',this.checked)" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer"/></th><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>Joined</th><th>Action</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>`;
+  } catch(e) {
+    container.innerHTML = `<div style="color:rgba(255,107,107,0.9);padding:20px;font-size:13px">⚠ Error: ${e.message}</div>`;
+  }
+}
+
+async function approveUser(uid) {
+  try {
+    await db.collection('users').doc(uid).update({ approved: true });
+    showToast('✅ User approved — they can now log in and shop');
+    loadUsers();
+  } catch(e) { showToast('❌ Error: ' + e.message); }
+}
+
+async function removeUser(uid, email) {
+  if (!confirm(`Remove user "${email}"? They will lose access immediately.`)) return;
+  try {
+    await db.collection('users').doc(uid).update({ approved: false });
+    showToast('🗑 User removed — access revoked');
+    loadUsers();
+  } catch(e) { showToast('❌ Error: ' + e.message); }
+}
+
+// ═══════════════════════════════════════
+// STOCK DASHBOARD
+// ═══════════════════════════════════════
+let sdLevel = 'companies'; // 'companies' | 'products' | 'entries'
+let sdCurrentCompany = '', sdCurrentProduct = '', allStockEntries = [];
+
+async function loadStockDashboard() {
+  sdLevel = 'companies'; sdCurrentCompany = ''; sdCurrentProduct = '';
+  const summaryEl = document.getElementById('sdSummaryCards');
+  const viewEl    = document.getElementById('sdView');
+  if (!summaryEl||!viewEl) return;
+  summaryEl.innerHTML = '<div class="loading" style="grid-column:1/-1"><div class="spinner"></div>Loading…</div>';
+  viewEl.innerHTML    = '';
+  try {
+    const snap = await db.collection('stockEntries').get();
+    allStockEntries = snap.docs.map(d=>({id:d.id,...d.data()}));
+
+    // Summary stats
+    const totalPurchased = allStockEntries.filter(e=>e.type==='purchase').reduce((s,e)=>s+(e.qty||0),0);
+    const totalSold      = allStockEntries.filter(e=>e.type==='sale').reduce((s,e)=>s+(e.qty||0),0);
+    const totalCostVal   = allStockEntries.filter(e=>e.type==='purchase').reduce((s,e)=>s+((e.qty||0)*(e.price||0)),0);
+    const totalSaleVal   = allStockEntries.filter(e=>e.type==='sale').reduce((s,e)=>s+((e.qty||0)*(e.sellPrice||e.price||0)),0);
+    const companies      = [...new Set(allStockEntries.map(e=>e.company||'(No Company)'))];
+
+    summaryEl.innerHTML = `
+      <div class="sc"><div class="sc-ico">🏢</div><div class="sc-num">${companies.length}</div><div class="sc-lbl">Companies</div></div>
+      <div class="sc"><div class="sc-ico">📥</div><div class="sc-num">${totalPurchased}</div><div class="sc-lbl">Total Received</div></div>
+      <div class="sc"><div class="sc-ico">📤</div><div class="sc-num">${totalSold}</div><div class="sc-lbl">Total Sold</div></div>
+      <div class="sc"><div class="sc-ico">📦</div><div class="sc-num">${totalPurchased-totalSold}</div><div class="sc-lbl">In Stock</div></div>`;
+
+    sdShowCompanies();
+  } catch(e) {
+    summaryEl.innerHTML = `<div style="color:rgba(255,107,107,0.9);padding:16px;grid-column:1/-1">⚠ ${e.message}</div>`;
+  }
+}
+
+function sdShowCompanies() {
+  sdLevel = 'companies'; sdCurrentCompany = ''; sdCurrentProduct = '';
+  document.getElementById('sdBreadcrumb').textContent = 'All Companies';
+  document.getElementById('sdBackBtn').style.display = 'none';
+  const companies = [...new Set(allStockEntries.map(e=>e.company||'(No Company)'))].sort();
+  const viewEl = document.getElementById('sdView');
+  if (!companies.length) { viewEl.innerHTML='<div class="loading">No stock entries yet.</div>'; return; }
+  viewEl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px">` +
+    companies.map(co => {
+      const coEntries = allStockEntries.filter(e=>(e.company||'(No Company)')===co);
+      const prods = [...new Set(coEntries.map(e=>e.product))];
+      const received = coEntries.filter(e=>e.type==='purchase').reduce((s,e)=>s+(e.qty||0),0);
+      const sold     = coEntries.filter(e=>e.type==='sale').reduce((s,e)=>s+(e.qty||0),0);
+      return `<div class="stock-card" style="cursor:pointer" onclick="sdShowProducts('${co.replace(/'/g,"\'")}')">
+        <div style="font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:#C9A84C;margin-bottom:8px">${co}</div>
+        <div class="stock-row"><span class="stock-lbl">Products</span><span class="stock-val">${prods.length}</span></div>
+        <div class="stock-row"><span class="stock-lbl">Received</span><span class="stock-val">${received}</span></div>
+        <div class="stock-row"><span class="stock-lbl">Sold</span><span class="stock-val">${sold}</span></div>
+        <div class="stock-row"><span class="stock-lbl">Balance</span><span class="stock-val ${received-sold<=0?'out':received-sold<=5?'low':'ok'}">${received-sold}</span></div>
+        <div style="font-size:11px;color:rgba(201,168,76,0.5);margin-top:10px;text-align:center">Tap to see products →</div>
+      </div>`;
+    }).join('') + '</div>';
+}
+
+function sdShowProducts(company) {
+  sdLevel = 'products'; sdCurrentCompany = company;
+  document.getElementById('sdBreadcrumb').textContent = '🏢 ' + company + ' → Products';
+  document.getElementById('sdBackBtn').style.display = '';
+  const coEntries = allStockEntries.filter(e=>(e.company||'(No Company)')===company);
+  const prodMap = {};
+  coEntries.forEach(e => {
+    const p = e.product||'—';
+    if (!prodMap[p]) prodMap[p]={purchase:0,sold:0,costVal:0,saleVal:0,sellPrice:0};
+    if (e.type==='purchase'){prodMap[p].purchase+=(e.qty||0);prodMap[p].costVal+=(e.qty||0)*(e.price||0);}
+    if (e.type==='sale'){prodMap[p].sold+=(e.qty||0);prodMap[p].saleVal+=(e.qty||0)*(e.sellPrice||e.price||0);}
+    if (e.sellPrice) prodMap[p].sellPrice=e.sellPrice;
+  });
+  const viewEl = document.getElementById('sdView');
+  viewEl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px">` +
+    Object.entries(prodMap).map(([prod,s]) => {
+      const bal=s.purchase-s.sold;
+      const cls=bal<=0?'out':bal<=5?'low':'ok';
+      const safeP=prod.replace(/'/g,"\'").replace(/"/g,'&quot;');
+      return `<div class="stock-card" style="cursor:pointer" onclick="sdShowEntries('${sdCurrentCompany.replace(/'/g,"\'")}','${safeP}')">
+        <div style="font-weight:600;font-size:14px;color:#E8C97A;margin-bottom:10px">${prod}</div>
+        <div class="stock-row"><span class="stock-lbl">📥 Purchased</span><span class="stock-val">${s.purchase} units</span></div>
+        <div class="stock-row"><span class="stock-lbl">📤 Sold</span><span class="stock-val">${s.sold} units</span></div>
+        <div class="stock-row"><span class="stock-lbl">📦 Balance</span><span class="stock-val ${cls}">${bal} units</span></div>
+        <div class="stock-row"><span class="stock-lbl">💵 Cost</span><span class="stock-val">₹${s.costVal}</span></div>
+        <div class="stock-row"><span class="stock-lbl">🏷️ Sell/unit</span><span class="stock-val" style="color:#C9A84C">₹${s.sellPrice||'—'}</span></div>
+        <div style="font-size:11px;color:rgba(201,168,76,0.5);margin-top:10px;text-align:center">Tap to see entries →</div>
+      </div>`;
+    }).join('') + '</div>';
+}
+
+function sdShowEntries(company, product) {
+  sdLevel = 'entries'; sdCurrentProduct = product;
+  document.getElementById('sdBreadcrumb').textContent = '🏢 ' + company + ' → ' + product;
+  document.getElementById('sdBackBtn').style.display = '';
+  const entries = allStockEntries.filter(e=>(e.company||'(No Company)')===company && e.product===product)
+    .sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const viewEl = document.getElementById('sdView');
+  if (!entries.length) { viewEl.innerHTML='<div class="loading">No entries found.</div>'; return; }
+  viewEl.innerHTML = `
+    ${isAdmin()?`<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="btn-danger" onclick="bulkDeleteStockDash()" style="font-size:11px">🗑 Delete Selected</button>
+      <span id="sdSelCount" style="font-size:12px;color:var(--muted);align-self:center"></span>
+    </div>`:''}
+    <div style="overflow-x:auto"><table class="tbl">
+    <thead><tr>
+      <th><input type="checkbox" id="selAllSd" onchange="toggleSelectAll('sdChk',this.checked)" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer"/></th>
+      <th>Date</th><th>Type</th><th>Qty</th><th>Cost ₹</th><th>Sell ₹</th><th>Note</th><th>Edit</th><th>Del</th>
+    </tr></thead>
+    <tbody>${entries.map(e=>`<tr>
+      <td><input type="checkbox" class="sdChk" value="${e.id}" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer" onchange="updateSdSelCount()"/></td>
+      <td style="font-size:11px;color:var(--muted)">${e.date||'—'}</td>
+      <td><span class="badge ${e.type==='purchase'?'badge-success':'badge-danger'}">${e.type==='purchase'?'📥 In':'📤 Out'}</span></td>
+      <td style="font-weight:700">${e.qty}</td>
+      <td>₹${e.price||0}</td>
+      <td style="color:#C9A84C">₹${e.sellPrice||'—'}</td>
+      <td style="font-size:12px;color:var(--muted)">${e.note||'—'}</td>
+      <td><button class="btn-ghost" style="font-size:10px;padding:5px 10px" onclick="openEditStock('${e.id}')">✏️ Edit</button></td>
+      ${isAdmin()?`<td><button class="btn-danger" onclick="deleteStockEntryDash('${e.id}')">🗑</button></td>`:'<td></td>'}
+    </tr>`).join('')}</tbody>
+  </table></div>`;
+}
+
+function sdBack() {
+  if (sdLevel === 'products') sdShowCompanies();
+  else if (sdLevel === 'entries') sdShowProducts(sdCurrentCompany);
+}
+
+// Edit stock entry
+function openEditStock(id) {
+  const e = allStockEntries.find(x=>x.id===id);
+  if (!e) return;
+  document.getElementById('editStockId').value   = id;
+  document.getElementById('editStockProd').value = e.product||'';
+  document.getElementById('editStockCo').value   = e.company||'';
+  document.getElementById('editStockQty').value  = e.qty||'';
+  document.getElementById('editStockCost').value = e.price||'';
+  document.getElementById('editStockSell').value = e.sellPrice||'';
+  document.getElementById('editStockDate').value = e.date||'';
+  document.getElementById('editStockNote').value = e.note||'';
+  document.getElementById('editStockMsg').textContent = '';
+  document.getElementById('editStockModal').style.display = 'flex';
+}
+function closeEditStock() {
+  document.getElementById('editStockModal').style.display = 'none';
+}
+async function saveStockEdit() {
+  const id   = document.getElementById('editStockId').value;
+  const msg  = document.getElementById('editStockMsg');
+  if (!id) return;
+  msg.textContent = 'Saving…';
+  try {
+    const data = {
+      product:   document.getElementById('editStockProd').value.trim(),
+      company:   document.getElementById('editStockCo').value.trim(),
+      qty:       parseInt(document.getElementById('editStockQty').value)||0,
+      price:     parseFloat(document.getElementById('editStockCost').value)||0,
+      sellPrice: parseFloat(document.getElementById('editStockSell').value)||0,
+      date:      document.getElementById('editStockDate').value,
+      note:      document.getElementById('editStockNote').value.trim(),
+    };
+    await db.collection('stockEntries').doc(id).update(data);
+    msg.textContent = '✅ Saved!';
+    // Refresh local cache
+    const idx = allStockEntries.findIndex(e=>e.id===id);
+    if (idx>=0) allStockEntries[idx] = {...allStockEntries[idx],...data};
+    setTimeout(()=>{ closeEditStock(); if(sdLevel==='entries') sdShowEntries(sdCurrentCompany,sdCurrentProduct); else if(sdLevel==='products') sdShowProducts(sdCurrentCompany); else loadStockDashboard(); },800);
+  } catch(e) { msg.textContent='❌ '+e.message; }
+}
+async function deleteStockEntryDash(id) {
+  if (!confirm('Delete this entry?')) return;
+  await db.collection('stockEntries').doc(id).delete();
+  allStockEntries = allStockEntries.filter(e=>e.id!==id);
+  if (sdLevel==='entries') sdShowEntries(sdCurrentCompany, sdCurrentProduct);
+  else loadStockDashboard();
+}
+
+// ── Edit from Current Stock Levels (loadStock) ──
+function openEditStockFromGrid(id) { openEditStock(id); }
+
+// ═══════════════════════════════════════
+// STOCK MANAGEMENT
+// ═══════════════════════════════════════
+let allStockProducts = []; // { id, name, company }
+let selectedStockProds = new Set(); // selected product ids/names
+
+async function populateProductDropdowns() {
+  try {
+    let snap; try { snap = await db.collection('products').get(); } catch(e) { snap = null; }
+    allStockProducts = [];
+    const companies = new Set();
+    if (snap) {
+      snap.docs.forEach(d => {
+        const p = d.data();
+        allStockProducts.push({ id: d.id, name: p.name||'', company: p.company||'' });
+        if (p.company) companies.add(p.company);
+      });
+    }
+    // Default products
+    const DEFS = [
+      {id:'p1',name:'Plastic Chairs',company:''},
+      {id:'p2',name:'Garden Chairs',company:''},
+      {id:'p3',name:'Baby High Chairs',company:''},
+      {id:'p4',name:'Plastic Stools',company:''},
+      {id:'p5',name:'Step Stools',company:''},
+      {id:'p6',name:'Storage Buckets',company:''},
+      {id:'p7',name:'Bathroom Buckets',company:''},
+      {id:'p8',name:'Laundry Baskets',company:''},
+      {id:'p9',name:'Storage Containers',company:''},
+      {id:'p10',name:'Cleaning Products',company:''},
+      {id:'p11',name:'Kitchenware',company:''},
+      {id:'p12',name:'Shelves & Racks',company:''},
+    ];
+    // Only add defaults if no products in Firestore
+    if (allStockProducts.length === 0) allStockProducts = DEFS;
+
+    // Populate company datalist
+    const dl = document.getElementById('companyList');
+    if (dl) dl.innerHTML = [...companies].map(c=>`<option value="${c}">`).join('');
+
+    // Populate company filter
+    const cf = document.getElementById('stFilterCompany');
+    if (cf) {
+      cf.innerHTML = '<option value="">All Companies</option>' +
+        [...companies].map(c=>`<option value="${c}">${c}</option>`).join('');
+    }
+
+    // Populate history filter
+    const hf = document.getElementById('stFilterProd');
+    if (hf) {
+      const names = [...new Set(allStockProducts.map(p=>p.name))];
+      hf.innerHTML = '<option value="">All Products</option>' +
+        names.map(n=>`<option value="${n}">${n}</option>`).join('');
+    }
+  } catch(e) {}
+}
+
+function filterStockProds() {
+  const company = (document.getElementById('stCompany')?.value||'').trim().toLowerCase();
+  const container = document.getElementById('stProdList');
+  if (!container) return;
+  // Filter products matching company
+  const filtered = company
+    ? allStockProducts.filter(p => p.company.toLowerCase().includes(company) || company === '')
+    : allStockProducts;
+
+  if (!filtered.length) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:6px">No products found for this company. All products shown:</div>';
+  }
+
+  const showList = filtered.length ? filtered : allStockProducts;
+  selectedStockProds.clear();
+  container.innerHTML = showList.map(p => `
+    <label style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background 0.15s" onmouseover="this.style.background='rgba(201,168,76,0.07)'" onmouseout="this.style.background='transparent'">
+      <input type="checkbox" value="${p.id}" data-name="${p.name}" onchange="onProdCheck(this)"
+        style="width:16px;height:16px;accent-color:#C9A84C;cursor:pointer;flex-shrink:0"/>
+      <span style="font-size:13px;color:#F0EDE8;font-weight:500">${p.name}</span>
+      ${p.company?`<span style="font-size:10px;color:#C9A84C;margin-left:auto">${p.company}</span>`:''}
+    </label>`).join('');
+}
+
+function onProdCheck(cb) {
+  const id = cb.value, name = cb.dataset.name;
+  if (cb.checked) { selectedStockProds.add(id); }
+  else { selectedStockProds.delete(id); }
+  updateQtyTable();
+}
+
+function updateQtyTable() {
+  const table = document.getElementById('stQtyTable');
+  const rows  = document.getElementById('stQtyRows');
+  if (!table || !rows) return;
+  if (selectedStockProds.size === 0) { table.style.display = 'none'; rows.innerHTML = ''; return; }
+  table.style.display = '';
+
+  // Save current input values BEFORE any DOM change
+  const saved = {};
+  rows.querySelectorAll('[data-id]').forEach(row => {
+    const id = row.getAttribute('data-id');
+    saved[id] = {
+      qty:  row.querySelector('.qty-inp')?.value  || '',
+      cost: row.querySelector('.cost-inp')?.value || '',
+      sell: row.querySelector('.sell-inp')?.value || ''
+    };
+  });
+
+  // Find which ids are new (not yet in DOM) and which were removed
+  const currentIds = new Set([...rows.querySelectorAll('[data-id]')].map(r=>r.getAttribute('data-id')));
+
+  // Remove rows for unchecked products
+  currentIds.forEach(id => {
+    if (!selectedStockProds.has(id)) {
+      const r = rows.querySelector(`[data-id="${id}"]`);
+      if (r) r.remove();
+    }
+  });
+
+  // Add rows for newly checked products
+  [...selectedStockProds].forEach(id => {
+    if (currentIds.has(id)) return; // already exists
+    const prod = allStockProducts.find(p=>p.id===id) || { name: id };
+    const sv = saved[id] || { qty:'', cost:'', sell:'' };
+    const div = document.createElement('div');
+    div.setAttribute('data-id', id);
+    div.style.cssText = 'display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px;align-items:center;padding:12px;border-radius:10px;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.12);margin-bottom:8px';
+    div.innerHTML = `
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#E8C97A;margin-bottom:2px">${prod.name}</div>
+        <div style="font-size:10px;color:var(--muted)">${prod.company||''}</div>
+      </div>
+      <div>
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Qty Received *</div>
+        <input type="number" class="qty-inp" placeholder="0" min="1" value="${sv.qty}"
+          style="width:100%;padding:8px 10px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.18);font-family:Outfit,sans-serif;font-size:14px;color:#F0EDE8;outline:none;transition:border 0.2s"
+          onfocus="this.style.borderColor='rgba(201,168,76,0.55)'" onblur="this.style.borderColor='rgba(201,168,76,0.18)'"/>
+      </div>
+      <div>
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Cost Price ₹</div>
+        <input type="number" class="cost-inp" placeholder="0" min="0" value="${sv.cost}"
+          style="width:100%;padding:8px 10px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.18);font-family:Outfit,sans-serif;font-size:14px;color:#F0EDE8;outline:none;transition:border 0.2s"
+          onfocus="this.style.borderColor='rgba(201,168,76,0.55)'" onblur="this.style.borderColor='rgba(201,168,76,0.18)'"/>
+      </div>
+      <div>
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Sell Price ₹</div>
+        <input type="number" class="sell-inp" placeholder="0" min="0" value="${sv.sell}"
+          style="width:100%;padding:8px 10px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.18);font-family:Outfit,sans-serif;font-size:14px;color:#F0EDE8;outline:none;transition:border 0.2s"
+          onfocus="this.style.borderColor='rgba(201,168,76,0.55)'" onblur="this.style.borderColor='rgba(201,168,76,0.18)'"/>
+      </div>`;
+    rows.appendChild(div);
+  });
+}
+
+async function addStockEntry() {
+  const company   = document.getElementById('stCompany')?.value.trim() || '';
+  const type      = document.getElementById('stType')?.value || 'purchase';
+  const date      = document.getElementById('stDate')?.value || '';
+  const sellPrice = parseFloat(document.getElementById('stSellPrice')?.value) || 0;
+  const note      = document.getElementById('stNote')?.value.trim() || '';
+  const msg       = document.getElementById('stMsg');
+  if (!date) { if(msg) msg.textContent='⚠ Date is required'; return; }
+  if (selectedStockProds.size === 0) { if(msg) msg.textContent='⚠ Select at least one product'; return; }
+
+  const rowsEl = document.getElementById('stQtyRows');
+  const entries = [];
+  let hasError = false;
+  [...selectedStockProds].forEach(id => {
+    const row = rowsEl.querySelector(`[data-id="${id}"]`);
+    if (!row) { hasError = true; return; }
+    const qty  = parseInt(row.querySelector('.qty-inp')?.value)  || 0;
+    const cost = parseFloat(row.querySelector('.cost-inp')?.value)|| 0;
+    const sell = parseFloat(row.querySelector('.sell-inp')?.value)|| sellPrice; // per-product sell, fallback to global
+    const prod = allStockProducts.find(p=>p.id===id)||{name:id};
+    if (qty <= 0) { hasError = true; return; }
+    entries.push({ product: prod.name, productId: id, company, type, qty, price: cost, sellPrice: sell, date, note });
+  });
+  if (hasError) { if(msg) msg.textContent='⚠ Set quantity for all selected products'; return; }
+  if (!entries.length) { if(msg) msg.textContent='⚠ No valid entries'; return; }
+
+  if(msg) msg.textContent='Saving…';
+  try {
+    const batch = db.batch();
+    entries.forEach(e => {
+      const ref = db.collection('stockEntries').doc();
+      batch.set(ref, { ...e, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    });
+    await batch.commit();
+    if(msg) { msg.textContent=`✅ ${entries.length} entr${entries.length>1?'ies':'y'} added!`; setTimeout(()=>msg.textContent='',3000); }
+    // Reset form
+    document.getElementById('stCompany').value = '';
+    document.getElementById('stSellPrice').value = '';
+    document.getElementById('stNote').value = '';
+    document.getElementById('stProdList').innerHTML = '<div style="color:var(--muted);font-size:12px;padding:6px">Enter company name above to see products…</div>';
+    document.getElementById('stQtyTable').style.display = 'none';
+    document.getElementById('stQtyRows').innerHTML = '';
+    selectedStockProds.clear();
+    loadStock();
+  } catch(e) { if(msg) msg.textContent='❌ '+e.message; }
+}
+
+async function loadStock() {
+  const grid = document.getElementById('stockGrid');
+  if (!grid) return;
+  grid.innerHTML = '<div class="loading"><div class="spinner"></div>Loading…</div>';
+  await populateProductDropdowns();
+  try {
+    const snap = await db.collection('stockEntries').get();
+    const entries = snap.docs.map(d=>d.data());
+    const filterCo = document.getElementById('stFilterCompany')?.value || '';
+
+    // Group: company → product → stats
+    const coMap = {};
+    entries.forEach(e => {
+      const co = e.company || '(No Company)';
+      if (!coMap[co]) coMap[co] = {};
+      const prod = e.product || '—';
+      if (!coMap[co][prod]) coMap[co][prod] = { purchase:0, sale:0, costVal:0, saleVal:0, sellPrice:0, lastDate:'' };
+      if (e.type==='purchase') { coMap[co][prod].purchase += e.qty; coMap[co][prod].costVal += e.qty*(e.price||0); }
+      if (e.type==='sale')     { coMap[co][prod].sale     += e.qty; coMap[co][prod].saleVal += e.qty*(e.sellPrice||e.price||0); }
+      if (e.sellPrice) coMap[co][prod].sellPrice = e.sellPrice;
+      if (e.date > coMap[co][prod].lastDate) coMap[co][prod].lastDate = e.date;
+    });
+
+    if (!Object.keys(coMap).length) {
+      grid.innerHTML = '<div class="loading">No stock entries yet. Add your first entry above.</div>';
+      loadStockHistory(); return;
+    }
+
+    const companies = filterCo ? [filterCo] : Object.keys(coMap).sort();
+    grid.innerHTML = companies.filter(co=>coMap[co]).map(co => {
+      const products = coMap[co];
+      const prodCards = Object.entries(products).map(([prod, s]) => {
+        const stock = s.purchase - s.sale;
+        const cls   = stock <= 0 ? 'out' : stock <= 5 ? 'low' : 'ok';
+        const pct   = s.purchase > 0 ? Math.min(100, Math.round((stock/s.purchase)*100)) : 0;
+        return `<div style="background:rgba(255,255,255,0.025);border:1px solid rgba(201,168,76,0.08);border-radius:10px;padding:12px;margin-bottom:10px">
+          <div style="font-weight:600;font-size:13px;color:#F0EDE8;margin-bottom:8px">${prod}</div>
+          <div class="stock-row"><span class="stock-lbl">📥 Received</span><span class="stock-val">${s.purchase} units</span></div>
+          <div class="stock-row"><span class="stock-lbl">📤 Sold</span><span class="stock-val">${s.sale} units</span></div>
+          <div class="stock-row"><span class="stock-lbl">📦 Balance</span><span class="stock-val ${cls}">${stock} units</span></div>
+          <div class="stock-row"><span class="stock-lbl">💵 Cost Value</span><span class="stock-val">₹${s.costVal}</span></div>
+          <div class="stock-row"><span class="stock-lbl">🏷️ Sell Price</span><span class="stock-val" style="color:#C9A84C">₹${s.sellPrice||'—'}/unit</span></div>
+          <div class="stock-row"><span class="stock-lbl">💰 Sales Value</span><span class="stock-val" style="color:rgba(46,213,115,0.9)">₹${s.saleVal}</span></div>
+          <div class="stock-bar"><div class="stock-bar-fill" style="width:${pct}%"></div></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:5px;text-align:center">${stock<=0?'❌ Out of stock':stock<=5?'⚠ Low stock':'✅ In stock'}</div>
+        </div>`;
+      }).join('');
+      return `<div class="stock-card" style="min-width:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(201,168,76,0.12)">
+          <div>
+            <div style="font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:#C9A84C">${co}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">${Object.keys(products).length} product${Object.keys(products).length!==1?'s':''}</div>
+          </div>
+          <span style="font-size:10px;color:var(--faint)">${Object.values(products).reduce((s,p)=>s+(p.purchase-p.sale),0)} units total</span>
+        </div>
+        ${prodCards}
+      </div>`;
+    }).join('');
+
+    // Use 2-col grid CSS
+    grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px';
+    loadStockHistory();
+  } catch(e) {
+    grid.innerHTML = `<div style="color:rgba(255,107,107,0.9);padding:16px">⚠ ${e.message}</div>`;
+  }
+}
+
+async function loadStockHistory() {
+  const container = document.getElementById('stockHistoryContainer');
+  if (!container) return;
+  container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    let snap; try { snap = await db.collection('stockEntries').orderBy('date','desc').get(); }
+    catch { snap = await db.collection('stockEntries').get(); }
+    let entries = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const filterProd = document.getElementById('stFilterProd')?.value||'';
+    const sort = document.getElementById('stSortHist')?.value||'newest';
+    if (filterProd) entries = entries.filter(e=>e.product===filterProd);
+    entries.sort((a,b)=>sort==='oldest'?(a.date||'').localeCompare(b.date||''):(b.date||'').localeCompare(a.date||''));
+    if (!entries.length) { container.innerHTML='<div class="loading">No entries found.</div>'; return; }
+    const rows = entries.map(e=>`<tr>
+      <td><input type="checkbox" class="histChk" value="${e.id}" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer" onchange="updateHistSelCount()"/></td>
+      <td style="font-size:11px;color:var(--muted)">${e.date||'—'}</td>
+      <td style="color:#C9A84C;font-weight:600;font-size:12px">${e.company||'—'}</td>
+      <td style="font-weight:600">${e.product||'—'}</td>
+      <td><span class="badge ${e.type==='purchase'?'badge-success':'badge-danger'}">${e.type==='purchase'?'📥 Received':'📤 Sold'}</span></td>
+      <td style="font-weight:600">${e.qty} units</td>
+      <td style="color:var(--muted)">₹${e.price||0}/unit</td>
+      <td style="color:#C9A84C">₹${e.sellPrice||'—'}/unit</td>
+      <td style="font-weight:700;color:#C9A84C">₹${(e.qty||0)*(e.price||0)}</td>
+      <td style="font-size:12px;color:var(--muted)">${e.note||'—'}</td>
+      ${isAdmin()?`<td><button class="btn-danger" onclick="deleteStockEntry('${e.id}')">🗑</button></td>`:'<td></td>'}
+    </tr>`).join('');
+    container.innerHTML=`
+      ${isAdmin()?`<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <button class="btn-danger" onclick="bulkDeleteStockHistory()" style="font-size:11px">🗑 Delete Selected</button>
+        <span id="histSelCount" style="font-size:12px;color:var(--muted);align-self:center"></span>
+      </div>`:''}
+      <div style="overflow-x:auto"><table class="tbl">
+      <thead><tr>
+        <th><input type="checkbox" id="selAllHist" onchange="toggleSelectAll('histChk',this.checked)" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer"/></th>
+        <th>Date</th><th>Company</th><th>Product</th><th>Type</th><th>Qty</th><th>Cost Price</th><th>Sell Price</th><th>Total Cost</th><th>Note</th><th>Del</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+  } catch(e) { container.innerHTML=`<div style="color:rgba(255,107,107,0.9);padding:16px">⚠ ${e.message}</div>`; }
+}
+
+async function deleteStockEntry(id) {
+  if (!confirm('Delete this stock entry?')) return;
+  await db.collection('stockEntries').doc(id).delete();
+  loadStock();
+}
+
+// ═══════════════════════════════════════
+// LEDGER
+// ═══════════════════════════════════════// ═══════════════════════════════════════
+// LEDGER
+// ═══════════════════════════════════════
+let ldgFilter = 'all';
+
+function ldgSetFilter(f, btn) {
+  ldgFilter = f;
+  document.querySelectorAll('.ldg-tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  loadLedger();
+}
+
+async function loadLedger() {
+  const container = document.getElementById('ledgerContainer');
+  if (!container) return;
+  container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+  // Set today's date default
+  const today = new Date().toISOString().split('T')[0];
+  const ldgDateEl = document.getElementById('ldgDate');
+  if (ldgDateEl && !ldgDateEl.value) ldgDateEl.value = today;
+
+  try {
+    let snap;
+    try { snap = await db.collection('ledger').orderBy('date','desc').get(); }
+    catch { snap = await db.collection('ledger').get(); }
+    let entries = snap.docs.map(d => ({id:d.id,...d.data()}));
+
+    // Filter by time period
+    const now   = new Date();
+    const todayStr  = now.toISOString().split('T')[0];
+    const weekAgo   = new Date(now - 7*86400000).toISOString().split('T')[0];
+    const monthStr  = todayStr.slice(0,7); // YYYY-MM
+    if (ldgFilter === 'today') entries = entries.filter(e => e.date === todayStr);
+    if (ldgFilter === 'week')  entries = entries.filter(e => e.date >= weekAgo);
+    if (ldgFilter === 'month') entries = entries.filter(e => e.date && e.date.startsWith(monthStr));
+    entries.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+
+    // Calculate summary
+    const totIn    = entries.filter(e=>e.type==='in').reduce((s,e)=>s+e.amount,0);
+    const totOut   = entries.filter(e=>e.type==='out').reduce((s,e)=>s+e.amount,0);
+    const gpayIn   = entries.filter(e=>e.type==='in'  &&e.mode==='gpay').reduce((s,e)=>s+e.amount,0);
+    const cashIn   = entries.filter(e=>e.type==='in'  &&e.mode==='cash').reduce((s,e)=>s+e.amount,0);
+    const gpayOut  = entries.filter(e=>e.type==='out' &&e.mode==='gpay').reduce((s,e)=>s+e.amount,0);
+    const cashOut  = entries.filter(e=>e.type==='out' &&e.mode==='cash').reduce((s,e)=>s+e.amount,0);
+    const bal      = totIn - totOut;
+
+    document.getElementById('ldgIn').textContent      = '₹'+totIn;
+    document.getElementById('ldgOut').textContent     = '₹'+totOut;
+    document.getElementById('ldgBal').textContent     = (bal>=0?'+':'')+'₹'+bal;
+    document.getElementById('ldgBal').style.color     = bal>=0?'rgba(46,213,115,0.9)':'rgba(255,107,107,0.9)';
+    document.getElementById('ldgGpayIn').textContent  = '₹'+gpayIn;
+    document.getElementById('ldgCashIn').textContent  = '₹'+cashIn;
+    document.getElementById('ldgGpayOut').textContent = '₹'+gpayOut;
+    document.getElementById('ldgCashOut').textContent = '₹'+cashOut;
+
+    if (!entries.length) { container.innerHTML = '<div class="loading">No transactions found for this period.</div>'; return; }
+
+    // Running balance
+    let runBal = 0;
+    const sorted = [...entries].reverse();
+    const balMap = {};
+    sorted.forEach(e => { runBal += e.type==='in'?e.amount:-e.amount; balMap[e.id]=runBal; });
+
+    const modeIcon = {cash:'💵 Cash', gpay:'📱 GPay', bank:'🏦 Bank'};
+    const rows = entries.map(e => {
+      const isIn = e.type==='in';
+      const rb = balMap[e.id];
+      return `<tr>
+        <td><input type="checkbox" class="ldgChk" value="${e.id}" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer" onchange="updateLdgSelCount()"/></td>
+        <td style="font-size:11px;color:var(--muted);white-space:nowrap">${e.date||'—'}</td>
+        <td style="font-size:12px;font-weight:600">${e.description||'—'}</td>
+        <td>${modeIcon[e.mode]||e.mode}</td>
+        <td style="color:rgba(46,213,115,0.9);font-weight:700;font-family:'Cinzel',serif">${isIn?'₹'+e.amount:''}</td>
+        <td style="color:rgba(255,107,107,0.9);font-weight:700;font-family:'Cinzel',serif">${!isIn?'₹'+e.amount:''}</td>
+        <td style="color:${rb>=0?'rgba(46,213,115,0.9)':'rgba(255,107,107,0.9)'};font-weight:700;font-family:'Cinzel',serif">${rb>=0?'+':''}₹${rb}</td>
+        <td><button class="btn-danger" onclick="deleteLedgerEntry('${e.id}')">🗑</button></td>
+      </tr>`;
+    }).join('');
+    container.innerHTML = `
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <button class="btn-danger" onclick="bulkDeleteLedger()" style="font-size:11px">🗑 Delete Selected</button>
+        <span id="ldgSelCount" style="font-size:12px;color:var(--muted);align-self:center"></span>
+      </div>
+      <div style="overflow-x:auto"><table class="tbl">
+      <thead><tr>
+        <th><input type="checkbox" id="selAllLdg" onchange="toggleSelectAll('ldgChk',this.checked)" style="accent-color:#C9A84C;width:15px;height:15px;cursor:pointer"/></th>
+        <th>Date</th><th>Description</th><th>Mode</th><th style="color:rgba(46,213,115,0.9)">Money In</th><th style="color:rgba(255,107,107,0.9)">Money Out</th><th>Balance</th><th>Del</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+  } catch(e) { container.innerHTML = `<div style="color:rgba(255,107,107,0.9);padding:16px">⚠ ${e.message}</div>`; }
+}
+
+async function addLedgerEntry() {
+  const type   = document.getElementById('ldgType').value;
+  const amount = parseFloat(document.getElementById('ldgAmt').value);
+  const mode   = document.getElementById('ldgMode').value;
+  const date   = document.getElementById('ldgDate').value;
+  const desc   = document.getElementById('ldgDesc').value.trim();
+  const msg    = document.getElementById('ldgMsg');
+  if (!amount || isNaN(amount) || !date) { msg.textContent = '⚠ Amount and date required'; return; }
+  try {
+    await db.collection('ledger').add({ type, amount, mode, date, description:desc, createdAt:firebase.firestore.FieldValue.serverTimestamp() });
+    msg.textContent = '✅ Transaction added!';
+    setTimeout(()=>msg.textContent='',2000);
+    document.getElementById('ldgAmt').value  = '';
+    document.getElementById('ldgDesc').value = '';
+    loadLedger();
+  } catch(e) { msg.textContent = '❌ '+e.message; }
+}
+
+async function deleteLedgerEntry(id) {
+  if (!confirm('Delete this transaction?')) return;
+  await db.collection('ledger').doc(id).delete();
+  loadLedger();
+}
+
+// Set today's date defaults on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const today = new Date().toISOString().split('T')[0];
+  ['stDate','ldgDate'].forEach(id => { const el=document.getElementById(id); if(el) el.value=today; });
+});
+
+// ═══════════════════════════════════════
+// CUSTOMER LEDGER
+// ═══════════════════════════════════════
+let currentCustId = null, currentCustName = '', currentCustTxs = [];
+
+function ldgSetView(view, btn) {
+  document.querySelectorAll('.ldg-tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const main = document.getElementById('ldgViewMain');
+  const custs = document.getElementById('ldgViewCustomers');
+  if (main) main.style.display      = view === 'main'      ? '' : 'none';
+  if (custs) custs.style.display    = view === 'customers' ? '' : 'none';
+  if (view === 'customers') loadCustomerLedger();
+}
+
+async function loadCustomerLedger() {
+  const grid = document.getElementById('customerSummaryGrid');
+  if (!grid) return;
+  closeCustDetail();
+  grid.innerHTML = '<div class="loading"><div class="spinner"></div>Loading…</div>';
+  try {
+    const [custSnap, txSnap] = await Promise.all([
+      db.collection('customers').get(),
+      db.collection('customerTransactions').get()
+    ]);
+    // Build tx map
+    const txMap = {};
+    txSnap.docs.forEach(d => {
+      const t = d.data();
+      if (!txMap[t.customerId]) txMap[t.customerId] = { gave:0, got:0 };
+      if (t.type === 'gave') txMap[t.customerId].gave += (t.amount||0);
+      if (t.type === 'got')  txMap[t.customerId].got  += (t.amount||0);
+    });
+    // Compute totals for summary cards
+    let totalOwed = 0, totalIPay = 0;
+    custSnap.docs.forEach(d => {
+      const tx = txMap[d.id]||{gave:0,got:0};
+      const bal = tx.gave - tx.got;
+      if (bal > 0) totalOwed += bal;   // they owe me
+      if (bal < 0) totalIPay += Math.abs(bal); // I owe them
+    });
+    const setEl = (id, v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+    setEl('custTotalOwed', '₹'+totalOwed);
+    setEl('custTotalIPay', '₹'+totalIPay);
+    const net = totalOwed - totalIPay;
+    setEl('custNetBal', (net>=0?'+':'')+'₹'+net);
+    const nb = document.getElementById('custNetBal');
+    if (nb) nb.style.color = net>=0?'rgba(46,213,115,0.9)':'rgba(255,107,107,0.9)';
+
+    if (custSnap.empty) { grid.innerHTML = '<div class="loading">No customers yet. Add one above.</div>'; return; }
+    const customers = custSnap.docs.sort((a,b)=>(a.data().name||'').localeCompare(b.data().name||''));
+    grid.innerHTML = customers.map(d => {
+      const c = d.data();
+      const tx = txMap[d.id]||{gave:0,got:0};
+      const bal = tx.gave - tx.got;
+      const balLabel = bal > 0 ? `<span style="color:rgba(255,107,107,0.9);font-weight:700">₹${bal} pending (they owe)</span>`
+                     : bal < 0 ? `<span style="color:rgba(46,213,115,0.9);font-weight:700">₹${Math.abs(bal)} (you owe)</span>`
+                     : `<span style="color:#C9A84C;font-weight:700">✓ Settled</span>`;
+      const safeId   = d.id;
+      const safeName = (c.name||'').replace(/'/g,"\'");
+      const safePhone = c.phone||'';
+      return `<div class="cust-card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px">
+          <div style="cursor:pointer;flex:1" onclick="openCustomer('${safeId}','${safeName}','${safePhone}')">
+            <div class="cust-name">${c.name||'—'}</div>
+            <div class="cust-phone">${c.phone||''}</div>
+          </div>
+          <button onclick="deleteCustomer('${safeId}','${safeName}')"
+            style="background:rgba(220,53,69,0.1);border:1px solid rgba(220,53,69,0.2);color:rgba(255,107,107,0.8);border-radius:7px;padding:5px 9px;font-size:11px;cursor:pointer;flex-shrink:0;transition:all 0.2s;line-height:1"
+            title="Delete customer" onmouseover="this.style.background='rgba(220,53,69,0.22)'" onmouseout="this.style.background='rgba(220,53,69,0.1)'">🗑</button>
+        </div>
+        <div style="cursor:pointer" onclick="openCustomer('${safeId}','${safeName}','${safePhone}')">
+          <div class="cust-row"><span class="stock-lbl">I Gave</span><span style="color:rgba(255,107,107,0.8)">₹${tx.gave}</span></div>
+          <div class="cust-row"><span class="stock-lbl">I Got</span><span style="color:rgba(46,213,115,0.8)">₹${tx.got}</span></div>
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px">${balLabel}</div>
+          <div style="font-size:10px;color:rgba(201,168,76,0.4);margin-top:6px;text-align:center">Tap to view transactions →</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    if (grid) grid.innerHTML = `<div style="color:rgba(255,107,107,0.9);padding:16px">⚠ ${e.message}</div>`;
+  }
+}
+
+function closeCustDetail() {
+  const db2 = document.getElementById('custDetailBox');
+  const sg  = document.getElementById('customerSummaryGrid');
+  if (db2) db2.style.display = 'none';
+  if (sg)  sg.style.display  = 'grid';
+  currentCustId = null; currentCustName = ''; currentCustTxs = [];
+}
+
+async function openCustomer(custId, custName, custPhone) {
+  currentCustId   = custId;
+  currentCustName = custName;
+  const db2 = document.getElementById('custDetailBox');
+  const sg  = document.getElementById('customerSummaryGrid');
+  if (db2) db2.style.display = '';
+  if (sg)  sg.style.display  = 'none';
+  const setEl = (id, v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  setEl('custDetailName', '👤 ' + custName);
+  setEl('custDetailPhone', custPhone ? '📞 ' + custPhone : '');
+  // Set today date
+  const today = new Date().toISOString().split('T')[0];
+  const dtEl = document.getElementById('custTxDate');
+  if (dtEl && !dtEl.value) dtEl.value = today;
+  await refreshCustDetail();
+}
+
+async function refreshCustDetail() {
+  const txList = document.getElementById('custTxList');
+  if (txList) txList.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    let snap;
+    try { snap = await db.collection('customerTransactions').where('customerId','==',currentCustId).orderBy('date','desc').get(); }
+    catch { snap = await db.collection('customerTransactions').where('customerId','==',currentCustId).get(); }
+    currentCustTxs = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const gave = currentCustTxs.filter(t=>t.type==='gave').reduce((s,t)=>s+(t.amount||0),0);
+    const got  = currentCustTxs.filter(t=>t.type==='got').reduce((s,t)=>s+(t.amount||0),0);
+    const bal  = gave - got;
+    const setEl = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+    setEl('custGave', '₹'+gave);
+    setEl('custGot',  '₹'+got);
+    const pendEl = document.getElementById('custPending');
+    if (pendEl) {
+      if (bal > 0)      { pendEl.textContent='₹'+bal+' (they owe you)';   pendEl.style.color='rgba(255,107,107,0.9)'; }
+      else if (bal < 0) { pendEl.textContent='₹'+Math.abs(bal)+' (you owe them)'; pendEl.style.color='rgba(46,213,115,0.9)'; }
+      else              { pendEl.textContent='✓ Settled';                  pendEl.style.color='#C9A84C'; }
+    }
+    renderCustTx();
+  } catch(e) {
+    const txList = document.getElementById('custTxList');
+    if (txList) txList.innerHTML = `<div style="color:rgba(255,107,107,0.9);padding:16px">⚠ ${e.message}</div>`;
+  }
+}
+
+function renderCustTx() {
+  const txList = document.getElementById('custTxList');
+  if (!txList) return;
+  if (!currentCustTxs.length) { txList.innerHTML = '<div class="loading">No transactions yet.</div>'; return; }
+  const sortEl = document.getElementById('custTxSort');
+  const sort = sortEl ? sortEl.value : 'newest';
+  let txs = [...currentCustTxs];
+  if (sort === 'newest')  txs.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  if (sort === 'oldest')  txs.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  if (sort === 'highest') txs.sort((a,b)=>(b.amount||0)-(a.amount||0));
+  if (sort === 'lowest')  txs.sort((a,b)=>(a.amount||0)-(b.amount||0));
+  // Running balance (always oldest→newest)
+  const chrono = [...txs].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const balMap = {}; let rb = 0;
+  chrono.forEach(t => { rb += t.type==='gave'?(t.amount||0):-(t.amount||0); balMap[t.id]=rb; });
+  const modeIcon = {cash:'💵 Cash', gpay:'📱 GPay', bank:'🏦 Bank'};
+  txList.innerHTML = `<table class="tbl">
+    <thead><tr><th>Date</th><th>Type</th><th>Mode</th><th style="color:rgba(255,107,107,0.9)">Gave ₹</th><th style="color:rgba(46,213,115,0.9)">Got ₹</th><th>Balance</th><th>Note</th><th>Del</th></tr></thead>
+    <tbody>${txs.map(t => {
+      const rb2 = balMap[t.id]||0;
+      return `<tr>
+        <td style="font-size:11px;color:var(--muted)">${t.date||'—'}</td>
+        <td><span class="badge ${t.type==='gave'?'badge-danger':'badge-success'}">${t.type==='gave'?'💸 Gave':'💰 Got'}</span></td>
+        <td style="font-size:12px">${modeIcon[t.mode]||t.mode||'—'}</td>
+        <td style="color:rgba(255,107,107,0.9);font-weight:700;font-family:Cinzel,serif">${t.type==='gave'?t.amount:''}</td>
+        <td style="color:rgba(46,213,115,0.9);font-weight:700;font-family:Cinzel,serif">${t.type==='got'?t.amount:''}</td>
+        <td style="font-weight:700;font-size:12px;color:${rb2>0?'rgba(255,107,107,0.9)':rb2<0?'rgba(46,213,115,0.9)':'#C9A84C'}">${rb2>0?'₹'+rb2+' pending':rb2<0?'₹'+Math.abs(rb2)+' advance':'Settled ✓'}</td>
+        <td style="font-size:12px;color:var(--muted)">${t.note||'—'}</td>
+        <td><button class="btn-danger" onclick="deleteCustTx('${t.id}')">🗑</button></td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+async function addCustTransaction() {
+  if (!currentCustId) return;
+  const type   = document.getElementById('custTxType').value;
+  const amount = parseFloat(document.getElementById('custTxAmt').value);
+  const mode   = document.getElementById('custTxMode').value;
+  const date   = document.getElementById('custTxDate').value;
+  const note   = document.getElementById('custTxNote').value.trim();
+  const msg    = document.getElementById('custTxMsg');
+  if (!amount || isNaN(amount) || !date) { msg.textContent='⚠ Amount and date required'; return; }
+  try {
+    await db.collection('customerTransactions').add({
+      customerId:currentCustId, customerName:currentCustName,
+      type, amount, mode, date, note,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    // Mirror to main ledger
+    await db.collection('ledger').add({
+      type:type==='gave'?'out':'in', amount, mode, date,
+      description:currentCustName+(note?' – '+note:''),
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    if (msg) { msg.textContent='✅ Added!'; setTimeout(()=>msg.textContent='',2000); }
+    document.getElementById('custTxAmt').value='';
+    document.getElementById('custTxNote').value='';
+    await refreshCustDetail();
+  } catch(e) { if(msg) msg.textContent='❌ '+e.message; }
+}
+
+async function deleteCustTx(id) {
+  if (!confirm('Delete this transaction?')) return;
+  await db.collection('customerTransactions').doc(id).delete();
+  await refreshCustDetail();
+}
+
+async function deleteCustomer(custId, custName) {
+  if (!confirm(`Delete customer "${custName}"?
+
+This will permanently delete all their transactions too. This cannot be undone.`)) return;
+  try {
+    // Delete all transactions for this customer first
+    const txSnap = await db.collection('customerTransactions').where('customerId','==',custId).get();
+    const batch  = db.batch();
+    txSnap.docs.forEach(d => batch.delete(d.ref));
+    batch.delete(db.collection('customers').doc(custId));
+    await batch.commit();
+    showToast('🗑 Customer "' + custName + '" deleted');
+    loadCustomerLedger();
+  } catch(e) { showToast('❌ ' + e.message); }
+}
+
+async function addCustomer() {
+  const name  = document.getElementById('newCustName').value.trim();
+  const phone = document.getElementById('newCustPhone').value.trim();
+  const msg   = document.getElementById('newCustMsg');
+  if (!name) { if(msg) msg.textContent='⚠ Name required'; return; }
+  try {
+    await db.collection('customers').add({ name, phone, createdAt:firebase.firestore.FieldValue.serverTimestamp() });
+    if(msg){ msg.textContent='✅ Added!'; setTimeout(()=>msg.textContent='',2000); }
+    document.getElementById('newCustName').value='';
+    document.getElementById('newCustPhone').value='';
+    loadCustomerLedger();
+  } catch(e) { if(msg) msg.textContent='❌ '+e.message; }
+}
+
+// ═══════════════════════════════════════
+// CATEGORY MANAGEMENT
+// ═══════════════════════════════════════
+let customCategories = [];
+
+async function loadCategories() {
+  try {
+    const snap = await db.collection('categories').orderBy('createdAt','asc').get().catch(()=>db.collection('categories').get());
+    customCategories = snap.docs.map(d=>({id:d.id,...d.data()}));
+    rebuildCatSelect();
+  } catch(e) {}
+}
+
+function rebuildCatSelect() {
+  const sel = document.getElementById('pCat');
+  if (!sel) return;
+  if (!customCategories.length) {
+    sel.innerHTML = '<option value="">— Add categories below first —</option>';
+    return;
+  }
+  const opts = customCategories.map(c=>{
+    const prefix = c.emoji ? c.emoji + ' ' : '';
+    return `<option value="${c.id}">${prefix}${c.name}</option>`;
+  });
+  sel.innerHTML = '<option value="">— Select category —</option>' + opts.join('');
+}
+
+async function loadCategoryManager() {
+  const container = document.getElementById('catListContainer');
+  if (!container) return;
+  container.innerHTML = '<div class="loading"><div class="spinner"></div>Loading…</div>';
+  await loadCategories();
+  const all = [...customCategories];
+  if (!all.length) {
+    container.innerHTML = '<div class="loading" style="padding:20px">No categories yet. Add one above.</div>';
+    return;
+  }
+  container.innerHTML = `<div style="overflow-x:auto"><table class="tbl">
+    <thead><tr><th>Emoji</th><th>Name</th><th>Type</th><th>Edit</th><th>Delete</th></tr></thead>
+    <tbody>${all.map(c => {
+      const isDefault = c.isDefault === true;
+      const emojiCell = c.emoji
+        ? `<span style="font-size:20px">${c.emoji}</span>`
+        : `<span style="color:var(--faint);font-size:11px">None</span>`;
+      return `<tr>
+        <td>${emojiCell}</td>
+        <td style="font-weight:600">${c.name}</td>
+        <td>${isDefault
+          ? '<span class="badge badge-gold">Default</span>'
+          : '<span class="badge badge-info">Custom</span>'}</td>
+        <td>${isDefault
+          ? '<span style="color:var(--faint);font-size:11px">—</span>'
+          : `<button class="btn-ghost" style="font-size:10px;padding:5px 10px" onclick="openEditCat('${c.id}','${(c.name||'').replace(/'/g,"\'")}','${(c.emoji||'').replace(/'/g,"\'")}')">✏️ Edit</button>`}</td>
+        <td>${isDefault
+          ? '<span style="color:var(--faint);font-size:11px">—</span>'
+          : `<button class="btn-danger" onclick="deleteCategory('${c.id}','${(c.name||'').replace(/'/g,"\'")}')">🗑 Delete</button>`}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+}
+
+async function createCategory() {
+  const name  = document.getElementById('newCatName')?.value.trim();
+  const emoji = document.getElementById('newCatEmoji')?.value.trim() || '';
+  const msg   = document.getElementById('catMsg');
+  if (!name) { if(msg) msg.textContent='⚠ Name required'; return; }
+  const id = name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  try {
+    await db.collection('categories').doc(id).set({
+      name, emoji,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    if(msg){ msg.textContent='✅ Created!'; setTimeout(()=>msg.textContent='',2500); }
+    document.getElementById('newCatName').value  = '';
+    document.getElementById('newCatEmoji').value = '';
+    await loadCategoryManager();
+    const sel = document.getElementById('pCat'); if(sel) sel.value = id;
+    showToast('✅ Category "' + name + '" created!');
+  } catch(e) { if(msg) msg.textContent='❌ '+e.message; }
+}
+
+function openEditCat(id, name, emoji) {
+  document.getElementById('editCatId').value    = id;
+  document.getElementById('editCatName').value  = name;
+  document.getElementById('editCatEmoji').value = emoji;
+  document.getElementById('editCatMsg').textContent = '';
+  document.getElementById('editCatModal').style.display = 'flex';
+}
+function closeEditCat() { document.getElementById('editCatModal').style.display = 'none'; }
+
+async function saveCategoryEdit() {
+  const id    = document.getElementById('editCatId').value;
+  const name  = document.getElementById('editCatName').value.trim();
+  const emoji = document.getElementById('editCatEmoji').value.trim() || '';
+  const msg   = document.getElementById('editCatMsg');
+  if (!name) { msg.textContent='⚠ Name required'; return; }
+  msg.textContent = 'Saving…';
+  try {
+    await db.collection('categories').doc(id).update({ name, emoji });
+    msg.textContent = '✅ Saved!';
+    setTimeout(()=>{ closeEditCat(); loadCategoryManager(); },700);
+    showToast('✅ Category updated!');
+  } catch(e) { msg.textContent='❌ '+e.message; }
+}
+
+async function deleteCategory(id, name) {
+  if (!confirm(`Delete category "${name}"?
+
+Products using this category will still exist but won't appear in this filter tab.`)) return;
+  try {
+    await db.collection('categories').doc(id).delete();
+    showToast('🗑 Category "' + name + '" deleted');
+    loadCategoryManager();
+  } catch(e) { showToast('❌ '+e.message); }
+}
+
+// backward-compat shim
+function addNewCategory() { createCategory(); }
+
+// Load on admin init
+loadCategories();
+setTimeout(loadCategoryManager, 1000);
+
+
+function toggleMobMore() {
+  const d = document.getElementById('mobMoreDrawer');
+  const btn = document.getElementById('mobMoreBtn');
+  if (!d) return;
+  const open = d.style.display === 'none' || !d.style.display;
+  d.style.display = open ? '' : 'none';
+  btn.style.color  = open ? '#C9A84C' : '';
+}
+function closeMobMore() {
+  const d = document.getElementById('mobMoreDrawer');
+  const btn = document.getElementById('mobMoreBtn');
+  if (d) d.style.display = 'none';
+  if (btn) btn.style.color = '';
+}
+// Close drawer when tapping outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('.mob-nav') && !e.target.closest('#mobMoreDrawer')) {
+    closeMobMore();
+  }
+});
+
+// ── BULK DELETE ──
+function toggleSelectAll(cls, checked) {
+  document.querySelectorAll('.' + cls).forEach(cb => cb.checked = checked);
+  updateSelCount(cls);
+}
+
+const selCountMap = {
+  orderChk:'orderSelCount', userChk:'userSelCount',
+  sdChk:'sdSelCount', histChk:'histSelCount', ldgChk:'ldgSelCount', custTxChk:'custTxSelCount'
+};
+function updateSelCount(cls) {
+  const count = document.querySelectorAll('.' + cls + ':checked').length;
+  const el = document.getElementById(selCountMap[cls]);
+  if (el) el.textContent = count > 0 ? count + ' selected' : '';
+}
+// Shortcuts for onchange inline handlers
+function updateSdSelCount()     { updateSelCount('sdChk'); }
+function updateHistSelCount()   { updateSelCount('histChk'); }
+function updateLdgSelCount()    { updateSelCount('ldgChk'); }
+function updateCustTxSelCount() { updateSelCount('custTxChk'); }
+
+document.addEventListener('change', e => {
+  if (e.target.classList.contains('orderChk')) updateSelCount('orderChk');
+  if (e.target.classList.contains('userChk'))  updateSelCount('userChk');
+});
+
+async function bulkDeleteOrders() {
+  const checked = [...document.querySelectorAll('.orderChk:checked')].map(cb => cb.value);
+  if (!checked.length) { showToast('⚠ Select at least one order'); return; }
+  if (!confirm(`Delete ${checked.length} selected order${checked.length>1?'s':''}? This cannot be undone.`)) return;
+  try {
+    const batch = db.batch();
+    checked.forEach(id => batch.delete(db.collection('orders').doc(id)));
+    await batch.commit();
+    showToast('🗑 ' + checked.length + ' order' + (checked.length>1?'s':'') + ' deleted');
+    loadOrders();
+  } catch(e) { showToast('❌ ' + e.message); }
+}
+
+async function bulkDeleteUsers() {
+  const checked = [...document.querySelectorAll('.userChk:checked')].map(cb => cb.value);
+  if (!checked.length) { showToast('⚠ Select at least one user'); return; }
+  if (!confirm(`Remove access for ${checked.length} selected user${checked.length>1?'s':''}?`)) return;
+  try {
+    const batch = db.batch();
+    checked.forEach(id => batch.update(db.collection('users').doc(id), { approved: false }));
+    await batch.commit();
+    showToast('🗑 ' + checked.length + ' user' + (checked.length>1?'s':'') + ' removed');
+    loadUsers();
+  } catch(e) { showToast('❌ ' + e.message); }
+}
+
+async function bulkDeleteStockDash() {
+  const checked = [...document.querySelectorAll('.sdChk:checked')].map(cb => cb.value);
+  if (!checked.length) { showToast('⚠ Select at least one entry'); return; }
+  if (!confirm(`Delete ${checked.length} selected stock entr${checked.length>1?'ies':'y'}? This cannot be undone.`)) return;
+  try {
+    const batch = db.batch();
+    checked.forEach(id => batch.delete(db.collection('stockEntries').doc(id)));
+    await batch.commit();
+    allStockEntries = allStockEntries.filter(e => !checked.includes(e.id));
+    showToast('🗑 ' + checked.length + ' entr' + (checked.length>1?'ies':'y') + ' deleted');
+    sdShowEntries(sdCurrentCompany, sdCurrentProduct);
+  } catch(e) { showToast('❌ ' + e.message); }
+}
+
+async function bulkDeleteStockHistory() {
+  const checked = [...document.querySelectorAll('.histChk:checked')].map(cb => cb.value);
+  if (!checked.length) { showToast('⚠ Select at least one entry'); return; }
+  if (!confirm(`Delete ${checked.length} selected stock entr${checked.length>1?'ies':'y'}?`)) return;
+  try {
+    const batch = db.batch();
+    checked.forEach(id => batch.delete(db.collection('stockEntries').doc(id)));
+    await batch.commit();
+    showToast('🗑 ' + checked.length + ' entr' + (checked.length>1?'ies':'y') + ' deleted');
+    loadStock();
+  } catch(e) { showToast('❌ ' + e.message); }
+}
+
+async function bulkDeleteLedger() {
+  const checked = [...document.querySelectorAll('.ldgChk:checked')].map(cb => cb.value);
+  if (!checked.length) { showToast('⚠ Select at least one transaction'); return; }
+  if (!confirm(`Delete ${checked.length} selected transaction${checked.length>1?'s':''}? This cannot be undone.`)) return;
+  try {
+    const batch = db.batch();
+    checked.forEach(id => batch.delete(db.collection('ledger').doc(id)));
+    await batch.commit();
+    showToast('🗑 ' + checked.length + ' transaction' + (checked.length>1?'s':'') + ' deleted');
+    loadLedger();
+  } catch(e) { showToast('❌ ' + e.message); }
+}
+
+// ═══════════════════════════════════════
+// STAFF MANAGEMENT
+// ═══════════════════════════════════════
+async function loadStaffFromFirestore() {
+  // Load staff emails from Firestore and merge with STAFF_EMAILS array
+  try {
+    const snap = await db.collection('staff').get();
+    snap.docs.forEach(d => {
+      const email = d.data().email;
+      if (email && !STAFF_EMAILS.includes(email)) STAFF_EMAILS.push(email);
+    });
+  } catch(e) {}
+}
+
+async function loadStaffList() {
+  const container = document.getElementById('staffListContainer');
+  if (!container) return;
+  container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    const snap = await db.collection('staff').get();
+    if (snap.empty) {
+      container.innerHTML = '<div class="loading">No staff added yet. Add an email above to grant staff access.</div>';
+      return;
+    }
+    const rows = snap.docs.map(d => {
+      const s = d.data();
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.08);margin-bottom:8px">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:#E8C97A">${s.email||'—'}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">Added ${s.addedAt?new Date(s.addedAt.toDate()).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—'}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:rgba(74,144,226,0.12);color:rgba(74,144,226,0.9);font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;border:1px solid rgba(74,144,226,0.25)">STAFF</span>
+          <button class="btn-danger" onclick="removeStaff('${d.id}','${(s.email||'').replace(/'/g,"\'")}')">🗑 Remove</button>
+        </div>
+      </div>`;
+    }).join('');
+    container.innerHTML = rows;
+  } catch(e) {
+    container.innerHTML = `<div style="color:rgba(255,107,107,0.9);padding:16px">⚠ ${e.message}</div>`;
+  }
+}
+
+async function addStaffEmail() {
+  const email = document.getElementById('staffEmailInput')?.value.trim().toLowerCase();
+  const msg   = document.getElementById('staffMsg');
+  if (!email || !email.includes('@')) { if(msg) msg.textContent='⚠ Enter a valid email'; return; }
+  if (ADMIN_EMAILS.includes(email)) { if(msg) msg.textContent='⚠ That is an admin email'; return; }
+  try {
+    // Save to Firestore
+    await db.collection('staff').add({
+      email,
+      addedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    // Add to local array immediately
+    if (!STAFF_EMAILS.includes(email)) STAFF_EMAILS.push(email);
+    if(msg){ msg.textContent='✅ Staff access granted to '+email; setTimeout(()=>msg.textContent='',3000); }
+    document.getElementById('staffEmailInput').value = '';
+    loadStaffList();
+    showToast('✅ '+email+' can now access as staff');
+  } catch(e) { if(msg) msg.textContent='❌ '+e.message; }
+}
+
+async function removeStaff(docId, email) {
+  if (!confirm(`Remove staff access for "${email}"?`)) return;
+  try {
+    await db.collection('staff').doc(docId).delete();
+    const idx = STAFF_EMAILS.indexOf(email);
+    if (idx >= 0) STAFF_EMAILS.splice(idx, 1);
+    showToast('🗑 Staff access removed for ' + email);
+    loadStaffList();
+  } catch(e) { showToast('❌ '+e.message); }
+}
+
+// Load staff emails from Firestore on init (so STAFF_EMAILS is up to date)
+loadStaffFromFirestore();
+// Load staff list when users panel first opens (delayed)
+setTimeout(() => { if(isAdmin()) loadStaffList(); }, 1500);
+
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
